@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Young Tots Edventures Summer Safari 2026 API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: registrations
+    description: Registration operations
+  - name: admin
+    description: Admin operations
+  - name: uploads
+    description: File upload operations
 paths:
   /healthz:
     get:
@@ -24,6 +30,186 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /registrations:
+    post:
+      operationId: createRegistration
+      tags: [registrations]
+      summary: Submit a new registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrationInput"
+      responses:
+        "201":
+          description: Registration created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Registration"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /registrations/{id}/payment-proof:
+    post:
+      operationId: uploadPaymentProof
+      tags: [uploads]
+      summary: Upload M-Pesa payment screenshot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentProofInput"
+      responses:
+        "200":
+          description: Payment proof uploaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Registration"
+        "404":
+          description: Registration not found
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+        "401":
+          description: Invalid credentials
+
+  /admin/registrations:
+    get:
+      operationId: listRegistrations
+      tags: [admin]
+      summary: List all registrations (admin)
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: paymentStatus
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of registrations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationListResponse"
+        "401":
+          description: Unauthorized
+
+  /admin/registrations/{id}:
+    get:
+      operationId: getRegistration
+      tags: [admin]
+      summary: Get a single registration (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Registration details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Registration"
+        "404":
+          description: Not found
+
+  /admin/registrations/{id}/payment-status:
+    patch:
+      operationId: updatePaymentStatus
+      tags: [admin]
+      summary: Update payment status (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentStatusUpdate"
+      responses:
+        "200":
+          description: Updated registration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Registration"
+        "404":
+          description: Not found
+
+  /admin/registrations/export:
+    get:
+      operationId: exportRegistrations
+      tags: [admin]
+      summary: Export registrations as CSV
+      responses:
+        "200":
+          description: CSV export
+          content:
+            text/csv:
+              schema:
+                type: string
+
+  /admin/stats:
+    get:
+      operationId: getStats
+      tags: [admin]
+      summary: Get registration stats summary
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +220,221 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RegistrationInput:
+      type: object
+      required:
+        - parentName
+        - parentPhone
+        - parentEmail
+        - childName
+        - childDateOfBirth
+        - childAge
+        - homeAddress
+        - emergencyContactName
+        - emergencyContactRelationship
+        - emergencyContactPhone
+        - authorizedPickupPerson
+        - authorizedPickupPhone
+        - consentAccepted
+        - consentSignature
+        - consentSignedBy
+      properties:
+        parentName:
+          type: string
+        parentPhone:
+          type: string
+        parentEmail:
+          type: string
+        childName:
+          type: string
+        childDateOfBirth:
+          type: string
+        childAge:
+          type: integer
+        homeAddress:
+          type: string
+        allergies:
+          type: ["string", "null"]
+        medicalConditions:
+          type: ["string", "null"]
+        physicalLimitations:
+          type: ["string", "null"]
+        specialNotes:
+          type: ["string", "null"]
+        emergencyContactName:
+          type: string
+        emergencyContactRelationship:
+          type: string
+        emergencyContactPhone:
+          type: string
+        authorizedPickupPerson:
+          type: string
+        authorizedPickupPhone:
+          type: string
+        consentAccepted:
+          type: boolean
+        consentSignature:
+          type: string
+        consentSignedBy:
+          type: string
+
+    Registration:
+      type: object
+      required:
+        - id
+        - parentName
+        - parentPhone
+        - parentEmail
+        - childName
+        - childDateOfBirth
+        - childAge
+        - homeAddress
+        - emergencyContactName
+        - emergencyContactRelationship
+        - emergencyContactPhone
+        - authorizedPickupPerson
+        - authorizedPickupPhone
+        - consentAccepted
+        - consentSignature
+        - consentSignedBy
+        - paymentStatus
+        - createdAt
+      properties:
+        id:
+          type: integer
+        parentName:
+          type: string
+        parentPhone:
+          type: string
+        parentEmail:
+          type: string
+        childName:
+          type: string
+        childDateOfBirth:
+          type: string
+        childAge:
+          type: integer
+        homeAddress:
+          type: string
+        allergies:
+          type: ["string", "null"]
+        medicalConditions:
+          type: ["string", "null"]
+        physicalLimitations:
+          type: ["string", "null"]
+        specialNotes:
+          type: ["string", "null"]
+        emergencyContactName:
+          type: string
+        emergencyContactRelationship:
+          type: string
+        emergencyContactPhone:
+          type: string
+        authorizedPickupPerson:
+          type: string
+        authorizedPickupPhone:
+          type: string
+        consentAccepted:
+          type: boolean
+        consentSignature:
+          type: string
+        consentSignedBy:
+          type: string
+        consentTimestamp:
+          type: ["string", "null"]
+        paymentStatus:
+          type: string
+          enum: [pending, confirmed, rejected]
+        paymentProofUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    RegistrationListResponse:
+      type: object
+      required:
+        - registrations
+        - total
+        - page
+        - limit
+      properties:
+        registrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Registration"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    PaymentProofInput:
+      type: object
+      required:
+        - paymentProofBase64
+        - mimeType
+      properties:
+        paymentProofBase64:
+          type: string
+        mimeType:
+          type: string
+
+    PaymentStatusUpdate:
+      type: object
+      required:
+        - paymentStatus
+      properties:
+        paymentStatus:
+          type: string
+          enum: [pending, confirmed, rejected]
+
+    AdminLoginInput:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthToken:
+      type: object
+      required:
+        - token
+        - username
+      properties:
+        token:
+          type: string
+        username:
+          type: string
+
+    StatsResponse:
+      type: object
+      required:
+        - total
+        - pending
+        - confirmed
+        - rejected
+        - todayRegistrations
+      properties:
+        total:
+          type: integer
+        pending:
+          type: integer
+        confirmed:
+          type: integer
+        rejected:
+          type: integer
+        todayRegistrations:
+          type: integer

@@ -1,0 +1,251 @@
+Build a professional, mobile-first web application called **Young Tots Edventures – Summer Safari 2026**.
+
+This is a children's holiday adventure program taking place from **Monday 6th July 2026 to Friday 10th July 2026** in Nairobi, Kenya.
+
+The application should serve as both a marketing website and a registration platform for parents.
+
+## Branding & Design
+
+* Bright, premium, child-friendly design.
+* Safari-inspired colors and visuals.
+* Use the Young Tots Edventures logo.
+* Use uploaded images from previous Young Tots activities throughout the website.
+* Create a highly visual experience with image galleries, banners, and activity cards.
+* Prioritize real Young Tots photos over stock images.
+
+## Hero Section
+
+Display:
+
+**Young Tots Edventures**
+**Summer Safari 2026**
+
+Adventure • Discovery • Learning • Fun
+
+**Dates:** 6th – 10th July 2026
+
+**Cost:** KSh 21,500 per child
+
+Call-to-action buttons:
+
+* Register Now
+* View Activities
+
+## About the Program
+
+Display:
+
+Get ready for an unforgettable Summer Safari filled with adventure, discovery, laughter, and endless fun. Our carefully designed 5-day experience combines exciting excursions, creative activities, and enriching experiences that inspire curiosity, build confidence, and create lasting friendships.
+
+## Summer Safari Schedule
+
+### Day 1 – Monday 6th July 2026
+
+### Enanka Art Gallery (Westlands)
+
+Display activity images.
+
+Highlights:
+
+* Art exploration
+* Creativity and self-expression
+* Interactive exhibitions
+* Kenyan art and culture
+
+### Day 2 – Tuesday 7th July 2026
+
+### The Jungle – Pins Entertainment (Sarit Centre)
+
+Display activity images.
+
+Highlights:
+
+* Interactive games
+* Adventure activities
+* Team building
+* Fun challenges
+
+### Day 3 – Wednesday 8th July 2026
+
+### Stedmak Gardens & Recreation Centre (Karen)
+
+Display activity images.
+
+Highlights:
+
+* Animal park tour
+* Train rides
+* Trampolines
+* Bouncing castles
+* Rock climbing
+* Floating restaurant experience
+
+### Day 4 – Thursday 9th July 2026
+
+### Ginah’s Bakery (Lavington)
+
+Display activity images.
+
+Highlights:
+
+* Cake making
+* Cookie baking
+* Decorating activities
+* Practical life skills
+* Teamwork and creativity
+
+### Day 5 – Friday 10th July 2026
+
+### Movie Day (Junction Mall)
+
+Display activity images.
+
+Highlights:
+
+* Exclusive movie theatre experience
+* 3D animated movie
+* End-of-safari celebration
+
+## Important Information
+
+Display prominently:
+
+* Assembly Point: Outside Cavina School, Kilungu Road
+* Reporting Time: 8:15 AM daily
+* Pick-Up Time: 3:00 PM daily
+* Transport provided
+* Lunch and water provided daily
+* Children should carry a snack
+* Children should wear comfortable sporty clothing
+* Full payment required to secure a slot
+
+## Pricing
+
+Display prominently:
+
+Summer Safari Package
+
+KSh 21,500 per child
+
+Includes:
+
+* Transport
+* Lunch
+* Water
+* Entry fees
+* Activities
+* Professional supervision
+
+## Registration Form
+
+Collect:
+
+### Parent / Guardian Information
+
+* Full Name
+* Phone Number
+* Email Address
+
+### Child Information
+
+* Full Name
+* Date of Birth
+* Age
+* Home Address
+
+### Medical Information
+
+* Allergies
+* Medical Conditions
+* Physical Limitations
+* Special Notes
+
+### Emergency Contacts
+
+* Contact Name
+* Relationship
+* Phone Number
+
+### Pickup Authorization
+
+* Authorized Pickup Person
+* Contact Number
+
+## Digital Consent Form
+
+Display the parental consent and liability waiver.
+
+Include:
+
+* Acceptance checkbox
+* Digital signature pad
+* Parent/Guardian Name
+* Date signed
+* Automatic timestamp
+
+Store signed consent forms securely.
+
+## Payment Confirmation
+
+Display:
+
+M-Pesa Payment Contacts
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+Allow parents to:
+
+* Upload payment screenshot
+* Submit payment confirmation
+
+Set payment status to Pending by default.
+
+## Contact Section
+
+For Enquiries:
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+Include:
+
+* Call button
+* WhatsApp button
+* Contact form
+
+## Admin Dashboard
+
+Secure login.
+
+Features:
+
+* View registrations
+* Search registrations
+* View participant details
+* View medical information
+* View signed consent forms
+* View uploaded payment proofs
+* Update payment status
+* Export registrations to Excel and CSV
+* Manage homepage banners and gallery images
+
+## Technical Requirements
+
+* React frontend
+* Tailwind CSS
+* Node.js backend
+* Supabase PostgreSQL database
+* Supabase Storage
+* Mobile responsive
+* Production ready
+* Fast loading
+* SEO optimized
+
+The final product should feel like a premium holiday camp booking platform that gives parents confidence, highlights safety, showcases the activities visually, and makes registration simple and seamless.

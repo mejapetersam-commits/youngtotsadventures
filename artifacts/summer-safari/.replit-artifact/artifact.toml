@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Young Tots Edventures – Summer Safari 2026"
+version = "1.0.0"
+id = "artifacts/summer-safari"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22599
+
+[services.development]
+run = "pnpm --filter @workspace/summer-safari run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/summer-safari", "run", "build" ]
+publicDir = "artifacts/summer-safari/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22599"
+BASE_PATH = "/"
