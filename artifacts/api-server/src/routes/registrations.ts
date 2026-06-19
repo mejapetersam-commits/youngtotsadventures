@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, registrationsTable } from "@workspace/db";
-import { eq, ilike, or, count, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import {
   CreateRegistrationBody,
   UploadPaymentProofBody,
@@ -8,6 +8,7 @@ import {
 } from "@workspace/api-zod";
 import path from "path";
 import fs from "fs";
+import { notifyNewRegistration } from "../lib/whatsapp";
 
 const router = Router();
 
@@ -45,6 +46,14 @@ router.post("/registrations", async (req, res) => {
       consentTimestamp: new Date(),
     })
     .returning();
+
+  // Fire-and-forget WhatsApp alert — does not block the response
+  notifyNewRegistration({
+    registrationId: registration.id,
+    childName: registration.childName,
+    parentName: registration.parentName,
+    parentPhone: registration.parentPhone,
+  }).catch(() => {/* already logged inside */});
 
   return res.status(201).json(serializeRegistration(registration));
 });
