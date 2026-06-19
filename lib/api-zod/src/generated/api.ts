@@ -18,6 +18,16 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
+ * @summary Get total registration count (public)
+ */
+export const GetRegistrationCountResponse = zod.object({
+  "total": zod.number(),
+  "capacity": zod.number(),
+  "spotsLeft": zod.number()
+})
+
+
+/**
  * @summary Submit a new registration
  */
 export const CreateRegistrationBody = zod.object({
@@ -35,6 +45,9 @@ export const CreateRegistrationBody = zod.object({
   "emergencyContactName": zod.string(),
   "emergencyContactRelationship": zod.string(),
   "emergencyContactPhone": zod.string(),
+  "emergency2ContactName": zod.string().nullish(),
+  "emergency2ContactRelationship": zod.string().nullish(),
+  "emergency2ContactPhone": zod.string().nullish(),
   "authorizedPickupPerson": zod.string(),
   "authorizedPickupPhone": zod.string(),
   "consentAccepted": zod.boolean(),
@@ -71,6 +84,9 @@ export const UploadPaymentProofResponse = zod.object({
   "emergencyContactName": zod.string(),
   "emergencyContactRelationship": zod.string(),
   "emergencyContactPhone": zod.string(),
+  "emergency2ContactName": zod.string().nullish(),
+  "emergency2ContactRelationship": zod.string().nullish(),
+  "emergency2ContactPhone": zod.string().nullish(),
   "authorizedPickupPerson": zod.string(),
   "authorizedPickupPhone": zod.string(),
   "consentAccepted": zod.boolean(),
@@ -124,6 +140,9 @@ export const ListRegistrationsResponse = zod.object({
   "emergencyContactName": zod.string(),
   "emergencyContactRelationship": zod.string(),
   "emergencyContactPhone": zod.string(),
+  "emergency2ContactName": zod.string().nullish(),
+  "emergency2ContactRelationship": zod.string().nullish(),
+  "emergency2ContactPhone": zod.string().nullish(),
   "authorizedPickupPerson": zod.string(),
   "authorizedPickupPhone": zod.string(),
   "consentAccepted": zod.boolean(),
@@ -163,6 +182,9 @@ export const GetRegistrationResponse = zod.object({
   "emergencyContactName": zod.string(),
   "emergencyContactRelationship": zod.string(),
   "emergencyContactPhone": zod.string(),
+  "emergency2ContactName": zod.string().nullish(),
+  "emergency2ContactRelationship": zod.string().nullish(),
+  "emergency2ContactPhone": zod.string().nullish(),
   "authorizedPickupPerson": zod.string(),
   "authorizedPickupPhone": zod.string(),
   "consentAccepted": zod.boolean(),
@@ -202,6 +224,9 @@ export const UpdatePaymentStatusResponse = zod.object({
   "emergencyContactName": zod.string(),
   "emergencyContactRelationship": zod.string(),
   "emergencyContactPhone": zod.string(),
+  "emergency2ContactName": zod.string().nullish(),
+  "emergency2ContactRelationship": zod.string().nullish(),
+  "emergency2ContactPhone": zod.string().nullish(),
   "authorizedPickupPerson": zod.string(),
   "authorizedPickupPhone": zod.string(),
   "consentAccepted": zod.boolean(),

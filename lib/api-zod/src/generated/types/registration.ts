@@ -27,6 +27,12 @@ export interface Registration {
   emergencyContactName: string;
   emergencyContactRelationship: string;
   emergencyContactPhone: string;
+  /** @nullable */
+  emergency2ContactName?: string | null;
+  /** @nullable */
+  emergency2ContactRelationship?: string | null;
+  /** @nullable */
+  emergency2ContactPhone?: string | null;
   authorizedPickupPerson: string;
   authorizedPickupPhone: string;
   consentAccepted: boolean;

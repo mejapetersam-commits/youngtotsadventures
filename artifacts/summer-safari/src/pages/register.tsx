@@ -39,6 +39,9 @@ const step4Schema = z.object({
   emergencyContactName: z.string().min(2, "Emergency contact name is required"),
   emergencyContactRelationship: z.string().min(2, "Relationship is required"),
   emergencyContactPhone: z.string().min(10, "Valid phone number required"),
+  emergency2ContactName: z.string().optional(),
+  emergency2ContactRelationship: z.string().optional(),
+  emergency2ContactPhone: z.string().optional(),
   authorizedPickupPerson: z.string().min(2, "Authorized pickup person required"),
   authorizedPickupPhone: z.string().min(10, "Valid phone number required"),
 });
@@ -79,6 +82,9 @@ export default function Register() {
       emergencyContactName: "",
       emergencyContactRelationship: "",
       emergencyContactPhone: "",
+      emergency2ContactName: "",
+      emergency2ContactRelationship: "",
+      emergency2ContactPhone: "",
       authorizedPickupPerson: "",
       authorizedPickupPhone: "",
       consentAccepted: false,
@@ -432,6 +438,48 @@ export default function Register() {
                             <FormItem>
                               <FormLabel>Phone Number</FormLabel>
                               <FormControl><Input placeholder="0700 000 000" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="bg-secondary/5 p-4 rounded-lg space-y-4 border border-dashed border-secondary/30">
+                      <div>
+                        <h3 className="font-bold text-secondary">Second Emergency Contact</h3>
+                        <p className="text-sm text-muted-foreground mt-1">Optional but recommended by the consent form.</p>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="emergency2ContactName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl><Input placeholder="John Doe" {...field} value={field.value || ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="emergency2ContactRelationship"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Relationship</FormLabel>
+                              <FormControl><Input placeholder="Uncle, Neighbour, etc." {...field} value={field.value || ""} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="emergency2ContactPhone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number</FormLabel>
+                              <FormControl><Input placeholder="0700 000 000" {...field} value={field.value || ""} /></FormControl>
                               <FormMessage />
                             </FormItem>
                           )}

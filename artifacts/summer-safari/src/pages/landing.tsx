@@ -1,11 +1,12 @@
 import { Link } from "wouter";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   MapPin, Calendar, Clock, Bus, Apple, PhoneCall, MessageCircle, ChevronRight, Check,
-  CheckCircle2
+  CheckCircle2, Users
 } from "lucide-react";
+import { useGetRegistrationCount } from "@workspace/api-client-react";
 
 // Real Images
 import enankaLogo from "@assets/Enanka_art_gallery_logo_1781863628482.png";
@@ -29,7 +30,9 @@ import cinemaxLogo from "@assets/Cinemax_logo_1781863560866.png";
 import cinemaxInterior from "@assets/Century_cinemax_1781863628481.jpg";
 
 export default function Landing() {
-  const stagger = {
+  const { data: countData } = useGetRegistrationCount();
+
+  const stagger: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -39,9 +42,9 @@ export default function Landing() {
     }
   };
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } }
   };
 
   return (
@@ -93,7 +96,7 @@ export default function Landing() {
               </Button>
             </motion.div>
             
-            <motion.div variants={item} className="mt-12 flex flex-wrap justify-center gap-8 text-sm font-medium text-secondary">
+            <motion.div variants={item} className="mt-12 flex flex-wrap justify-center gap-4 text-sm font-medium text-secondary">
               <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-border">
                 <Calendar className="h-4 w-4 text-primary" /> 6th – 10th July 2026
               </div>
@@ -104,6 +107,30 @@ export default function Landing() {
                 <span className="text-primary font-bold">KSh</span> 21,500 / child
               </div>
             </motion.div>
+
+            {countData && (
+              <motion.div variants={item} className="mt-8">
+                <div className={`inline-flex flex-col items-center gap-3 px-6 py-4 rounded-2xl shadow-md border-2 ${countData.spotsLeft <= 5 ? "bg-red-50 border-red-200" : countData.spotsLeft <= 10 ? "bg-amber-50 border-amber-200" : "bg-green-50 border-green-200"}`}>
+                  <div className="flex items-center gap-2">
+                    <Users className={`h-5 w-5 ${countData.spotsLeft <= 5 ? "text-red-500" : countData.spotsLeft <= 10 ? "text-amber-500" : "text-green-600"}`} />
+                    <span className={`font-bold text-base ${countData.spotsLeft <= 5 ? "text-red-700" : countData.spotsLeft <= 10 ? "text-amber-700" : "text-green-700"}`}>
+                      {countData.spotsLeft === 0
+                        ? "All spots are filled!"
+                        : countData.spotsLeft <= 5
+                        ? `Only ${countData.spotsLeft} spot${countData.spotsLeft === 1 ? "" : "s"} remaining — register now!`
+                        : `${countData.spotsLeft} of ${countData.capacity} spots still available`}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 min-w-[200px]">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-700 ${countData.spotsLeft <= 5 ? "bg-red-500" : countData.spotsLeft <= 10 ? "bg-amber-500" : "bg-green-500"}`}
+                      style={{ width: `${Math.min(100, (countData.total / countData.capacity) * 100)}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground">{countData.total} families registered so far</span>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </section>

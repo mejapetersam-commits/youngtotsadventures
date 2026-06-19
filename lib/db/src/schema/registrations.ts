@@ -20,10 +20,14 @@ export const registrationsTable = pgTable("registrations", {
   medicalConditions: text("medical_conditions"),
   physicalLimitations: text("physical_limitations"),
   specialNotes: text("special_notes"),
-  // Emergency contact
+  // Emergency contact 1
   emergencyContactName: text("emergency_contact_name").notNull(),
   emergencyContactRelationship: text("emergency_contact_relationship").notNull(),
   emergencyContactPhone: text("emergency_contact_phone").notNull(),
+  // Emergency contact 2 (optional)
+  emergency2ContactName: text("emergency2_contact_name"),
+  emergency2ContactRelationship: text("emergency2_contact_relationship"),
+  emergency2ContactPhone: text("emergency2_contact_phone"),
   // Pickup authorization
   authorizedPickupPerson: text("authorized_pickup_person").notNull(),
   authorizedPickupPhone: text("authorized_pickup_phone").notNull(),

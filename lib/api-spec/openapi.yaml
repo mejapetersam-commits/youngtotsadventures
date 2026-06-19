@@ -31,6 +31,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
 
+  /registrations/count:
+    get:
+      operationId: getRegistrationCount
+      tags: [registrations]
+      summary: Get total registration count (public)
+      responses:
+        "200":
+          description: Registration count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationCount"
+
   /registrations:
     post:
       operationId: createRegistration
@@ -275,6 +288,12 @@ components:
           type: string
         emergencyContactPhone:
           type: string
+        emergency2ContactName:
+          type: ["string", "null"]
+        emergency2ContactRelationship:
+          type: ["string", "null"]
+        emergency2ContactPhone:
+          type: ["string", "null"]
         authorizedPickupPerson:
           type: string
         authorizedPickupPhone:
@@ -338,6 +357,12 @@ components:
           type: string
         emergencyContactPhone:
           type: string
+        emergency2ContactName:
+          type: ["string", "null"]
+        emergency2ContactRelationship:
+          type: ["string", "null"]
+        emergency2ContactPhone:
+          type: ["string", "null"]
         authorizedPickupPerson:
           type: string
         authorizedPickupPhone:
@@ -418,6 +443,20 @@ components:
           type: string
         username:
           type: string
+
+    RegistrationCount:
+      type: object
+      required:
+        - total
+        - capacity
+        - spotsLeft
+      properties:
+        total:
+          type: integer
+        capacity:
+          type: integer
+        spotsLeft:
+          type: integer
 
     StatsResponse:
       type: object

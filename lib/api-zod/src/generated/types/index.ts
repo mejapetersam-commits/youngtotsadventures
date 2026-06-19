@@ -15,6 +15,7 @@ export * from './paymentProofInput';
 export * from './paymentStatusUpdate';
 export * from './paymentStatusUpdatePaymentStatus';
 export * from './registration';
+export * from './registrationCount';
 export * from './registrationInput';
 export * from './registrationListResponse';
 export * from './registrationPaymentStatus';

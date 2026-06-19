@@ -28,6 +28,7 @@ import type {
   PaymentProofInput,
   PaymentStatusUpdate,
   Registration,
+  RegistrationCount,
   RegistrationInput,
   RegistrationListResponse,
   StatsResponse
@@ -111,6 +112,83 @@ export function useHealthCheck<TData = Awaited<ReturnType<typeof healthCheck>>, 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getHealthCheckQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetRegistrationCountUrl = () => {
+
+
+
+
+  return `/api/registrations/count`
+}
+
+/**
+ * @summary Get total registration count (public)
+ */
+export const getRegistrationCount = async ( options?: RequestInit): Promise<RegistrationCount> => {
+
+  return customFetch<RegistrationCount>(getGetRegistrationCountUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetRegistrationCountQueryKey = () => {
+    return [
+    `/api/registrations/count`
+    ] as const;
+    }
+
+
+export const getGetRegistrationCountQueryOptions = <TData = Awaited<ReturnType<typeof getRegistrationCount>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRegistrationCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRegistrationCountQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegistrationCount>>> = ({ signal }) => getRegistrationCount({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRegistrationCount>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRegistrationCountQueryResult = NonNullable<Awaited<ReturnType<typeof getRegistrationCount>>>
+export type GetRegistrationCountQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get total registration count (public)
+ */
+
+export function useGetRegistrationCount<TData = Awaited<ReturnType<typeof getRegistrationCount>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRegistrationCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetRegistrationCountQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useGetStats, useListRegistrations, useExportRegistrations } from "@workspace/api-client-react";
+import { useGetStats, useListRegistrations, useExportRegistrations, getExportRegistrationsQueryKey } from "@workspace/api-client-react";
 import { useState } from "react";
 import { format } from "date-fns";
 import { 
@@ -31,7 +31,9 @@ export default function AdminDashboard() {
     limit: 50
   });
   
-  const exportMutation = useExportRegistrations();
+  const { refetch: fetchExport, isFetching: isExporting } = useExportRegistrations({
+    query: { enabled: false, queryKey: getExportRegistrationsQueryKey() }
+  });
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -39,19 +41,18 @@ export default function AdminDashboard() {
   };
 
   const handleExport = async () => {
-    try {
-      const csvData = await exportMutation.mutateAsync();
-      const blob = new Blob([csvData], { type: 'text/csv' });
+    const { data: csvData } = await fetchExport();
+    if (csvData) {
+      const blob = new Blob([csvData], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.setAttribute('hidden', '');
-      a.setAttribute('href', url);
-      a.setAttribute('download', `registrations-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+      const a = document.createElement("a");
+      a.setAttribute("hidden", "");
+      a.setAttribute("href", url);
+      a.setAttribute("download", `registrations-${format(new Date(), "yyyy-MM-dd")}.csv`);
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    } catch (error) {
-      console.error("Export failed", error);
+      window.URL.revokeObjectURL(url);
     }
   };
 
@@ -144,7 +145,7 @@ export default function AdminDashboard() {
                   <SelectItem value="rejected">Rejected</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="outline" onClick={handleExport} disabled={exportMutation.isPending} className="w-full sm:w-auto gap-2">
+              <Button variant="outline" onClick={handleExport} disabled={isExporting} className="w-full sm:w-auto gap-2">
                 <FileDown className="h-4 w-4" />
                 Export CSV
               </Button>

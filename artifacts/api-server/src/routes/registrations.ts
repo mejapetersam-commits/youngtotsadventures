@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, registrationsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 import {
   CreateRegistrationBody,
   UploadPaymentProofBody,
@@ -11,6 +11,19 @@ import fs from "fs";
 import { notifyNewRegistration } from "../lib/whatsapp";
 
 const router = Router();
+
+const SAFARI_CAPACITY = 30;
+
+// GET /registrations/count - public spot counter
+router.get("/registrations/count", async (req, res) => {
+  const [row] = await db.select({ value: count() }).from(registrationsTable);
+  const total = Number(row?.value ?? 0);
+  return res.json({
+    total,
+    capacity: SAFARI_CAPACITY,
+    spotsLeft: Math.max(0, SAFARI_CAPACITY - total),
+  });
+});
 
 // POST /registrations - public registration submission
 router.post("/registrations", async (req, res) => {
@@ -38,6 +51,9 @@ router.post("/registrations", async (req, res) => {
       emergencyContactName: data.emergencyContactName,
       emergencyContactRelationship: data.emergencyContactRelationship,
       emergencyContactPhone: data.emergencyContactPhone,
+      emergency2ContactName: data.emergency2ContactName ?? null,
+      emergency2ContactRelationship: data.emergency2ContactRelationship ?? null,
+      emergency2ContactPhone: data.emergency2ContactPhone ?? null,
       authorizedPickupPerson: data.authorizedPickupPerson,
       authorizedPickupPhone: data.authorizedPickupPhone,
       consentAccepted: data.consentAccepted,

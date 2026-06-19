@@ -1,5 +1,5 @@
 import { Link, useParams } from "wouter";
-import { useGetRegistration, useUpdatePaymentStatus, PaymentStatusUpdatePaymentStatus } from "@workspace/api-client-react";
+import { useGetRegistration, useUpdatePaymentStatus, PaymentStatusUpdatePaymentStatus, getGetRegistrationQueryKey } from "@workspace/api-client-react";
 import { format } from "date-fns";
 import { 
   ArrowLeft, MapPin, CheckCircle2, XCircle, Clock, Calendar, 
@@ -18,7 +18,7 @@ export default function RegistrationDetail() {
   const { toast } = useToast();
 
   const { data: registration, isLoading } = useGetRegistration(id, {
-    query: { enabled: !!id }
+    query: { enabled: !!id, queryKey: getGetRegistrationQueryKey(id) }
   });
 
   const updateStatusMutation = useUpdatePaymentStatus();
