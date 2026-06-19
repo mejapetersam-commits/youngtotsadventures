@@ -172,11 +172,9 @@ export default function Register() {
       <div className="min-h-screen bg-background pt-10 pb-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center mb-8">
-            <Link href="/">
-              <a className="inline-flex items-center gap-2">
-                <MapPin className="h-8 w-8 text-primary" />
-                <span className="text-2xl font-serif font-bold text-foreground">Young Tots</span>
-              </a>
+            <Link href="/" className="inline-flex items-center gap-2">
+              <MapPin className="h-8 w-8 text-primary" />
+              <span className="text-2xl font-serif font-bold text-foreground">Young Tots</span>
             </Link>
           </div>
           
@@ -225,11 +223,9 @@ export default function Register() {
     <div className="min-h-screen bg-background pt-10 pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center mb-8">
-          <Link href="/">
-            <a className="inline-flex items-center gap-2">
-              <MapPin className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-serif font-bold text-foreground">Young Tots</span>
-            </a>
+          <Link href="/" className="inline-flex items-center gap-2">
+            <MapPin className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-serif font-bold text-foreground">Young Tots</span>
           </Link>
         </div>
         
@@ -585,15 +581,13 @@ export default function Register() {
                         </ul>
                       </div>
                       
-                      <FormItem>
-                        <FormLabel>Upload M-Pesa Payment Screenshot (Optional but recommended)</FormLabel>
-                        <FormControl>
-                          <Input type="file" accept="image/*" onChange={handleFileUpload} />
-                        </FormControl>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium leading-none">Upload M-Pesa Payment Screenshot (Optional but recommended)</label>
+                        <Input type="file" accept="image/*" onChange={handleFileUpload} />
                         {form.formState.errors.paymentProofBase64 && (
                           <p className="text-sm font-medium text-destructive">{form.formState.errors.paymentProofBase64.message}</p>
                         )}
-                      </FormItem>
+                      </div>
                     </div>
                   </div>
                 </div>
