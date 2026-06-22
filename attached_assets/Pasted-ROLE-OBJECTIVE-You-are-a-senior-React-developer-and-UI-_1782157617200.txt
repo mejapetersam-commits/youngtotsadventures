@@ -1,0 +1,261 @@
+ROLE & OBJECTIVE
+You are a senior React developer and UI/UX designer. Your task is to rebuild the Young Tots Edventures website — currently live at https://image-gallery-manager--mejapetersam.replit.app/ — within the existing Replit React project. Do not start a new project. Work within the existing file structure.
+
+The goal: a parent landing on this site should feel confident enough to register their child within 60 seconds. Every section, every design decision, every CTA should serve that single objective.
+TECH STACK
+Framework: React (existing Replit project)
+Styling: Tailwind CSS
+Database: Supabase (credentials to be inserted by developer — see section below)
+Image handling: Use all image assets already in the project. Scan /public/images/ and /src/assets/ for available files. Select images that show children actively participating, group moments, outdoor adventures, and learning experiences. Do not use placeholder image URLs.
+BRAND COLORS (APPLY CONSISTENTLY ACROSS ALL COMPONENTS)
+Primary:    #F59E0B  — Warm Safari Gold
+Secondary:  #15803D  — Adventure Green
+Accent:     #0F172A  — Deep Navy
+Background: #FFFDF7  — Warm Ivory
+Text:       #1F2937  — Dark Charcoal
+
+Visual identity must feel: vibrant, child-friendly, trustworthy, and premium. Not generic. Not corporate blue-white. Alternate section backgrounds between #FFFDF7 and a light warm cream (#FEF3C7) to avoid flat monotony.
+COMPONENT ARCHITECTURE
+Build each section as a standalone reusable React component:
+
+/components
+  Hero.jsx
+  DayCards.jsx
+  DailyTimeline.jsx
+  Pricing.jsx
+  SocialProof.jsx
+  WhyChooseUs.jsx
+  Gallery.jsx
+  Testimonials.jsx
+  FAQ.jsx
+  RegistrationWizard.jsx
+  PaymentDetails.jsx
+  TeamSection.jsx         ← only render if real photos exist
+  ContactSection.jsx
+  StickyMobileFooter.jsx
+  ConfirmationPage.jsx
+
+/hooks
+  useSupabase.js          ← handles all DB interactions
+
+/lib
+  supabaseClient.js       ← Supabase init (insert credentials here)
+SUPABASE SETUP
+⚠ Developer action required — insert credentials before building
+In /lib/supabaseClient.js:
+
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'INSERT_YOUR_SUPABASE_URL'
+const supabaseKey = 'INSERT_YOUR_SUPABASE_ANON_KEY'
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+Create a table called "registrations" with these columns:
+
+id                  uuid, primary key, default gen_random_uuid()
+created_at          timestamp, default now()
+registration_ref    text (generate as YT-YYYY-XXXX on submit)
+parent_name         text
+parent_phone        text
+parent_email        text
+child_name          text
+child_dob           date
+child_age           integer
+medical_conditions  text
+allergies           text
+emergency_contact   text
+emergency_phone     text
+consent_given       boolean
+payment_reference   text
+payment_screenshot_url text
+status              text, default 'pending'
+SECTION 1 — HERO
+Full-screen section. Auto-rotating photo slideshow from available project images (5-second intervals, fade transition — no heavy JS carousel libraries).
+
+Overlay text (centered, mobile-first):
+  YOUNG TOTS EDVENTURES
+  Summer Safari 2026
+  5 Days of Adventure, Creativity & Discovery
+  6–10 July 2026 | KSh 21,500 Per Child
+
+Two buttons:
+  [Reserve My Child's Slot]  ← primary, #F59E0B
+  [Explore the Safari]       ← secondary, outlined
+
+Four trust badges below buttons:
+  ✓ Safe & Supervised  ✓ Transport Included  ✓ Meals Included  ✓ Limited Slots Available
+
+Live countdown timer to 6 July 2026.
+Subtle scroll-down arrow indicator at bottom.
+
+Mobile requirement: All of the above must be visible above the fold on a 390px screen without scrolling.
+SECTION 2 — DAY-BY-DAY EXPERIENCE
+5 premium cards. Each card: real project photo, venue name, location badge, activity highlights.
+
+Day 1: Enanka Art Gallery, Westlands
+  Highlights: Creativity · Art Exploration · Self-Expression · Kenyan Culture
+
+Day 2: The Jungle, Sarit Centre
+  Highlights: Adventure · Interactive Games · Teamwork · Fun Challenges
+
+Day 3: Stedmak Gardens, Karen
+  Highlights: Animal Park · Train Rides · Trampolines · Rock Climbing
+
+Day 4: Ginah's Bakery, Lavington
+  Highlights: Baking · Cake Decorating · Cookie Making · Practical Skills
+
+Day 5: Movie Day, Junction Mall
+  Highlights: Cinema · 3D Movie · Celebration Day
+
+CTA after this section: [Reserve My Child's Slot]
+SECTION 3 — DAILY TIMELINE
+Visual vertical timeline with icons. Answers: "What happens after I drop off my child?"
+
+8:15 AM — Arrival & Check-In
+9:00 AM — Travel to Venue
+10:00 AM — Guided Activities Begin
+12:30 PM — Lunch & Rest
+1:30 PM — Afternoon Activities
+2:30 PM — Group Wrap-Up
+3:00 PM — Pick-Up
+
+Use Tailwind + inline SVG icons (no external icon library dependency).
+SECTION 4 — PRICING & INCLUSIONS
+Premium pricing card. Display:
+
+KSh 21,500 Per Child — 5-Day Summer Safari Package
+
+Includes:
+  ✓ Transport (daily)
+  ✓ All Entry Fees
+  ✓ Lunch Daily
+  ✓ Drinking Water
+  ✓ Professional Supervision
+  ✓ Guided Activities
+  ✓ Safe Group Travel
+  ✓ Memorable Experiences
+
+CTA: [Reserve My Child's Slot]
+SECTION 5 — SOCIAL PROOF
+Use only honest, modest wording. Do not fabricate statistics.
+
+Acceptable examples:
+  "50+ Happy Campers"
+  "4 Years Running"
+  "Trusted by Families Across Nairobi"
+  "5-Star Parent Feedback"
+
+If numbers cannot be confirmed, use qualitative language only.
+No animated counters with fake numbers.
+SECTION 6 — WHY CHOOSE YOUNG TOTS
+6 icon-based benefit cards in a 2x3 grid (mobile: 1 column):
+
+1. Safe & Structured Adventures
+2. Experienced & Caring Supervisors
+3. Organised Transportation (daily)
+4. Educational Experiences Built In
+5. Friendship & Teamwork Focus
+6. Confidence & Independence Building
+
+Each card: icon (SVG inline), bold title, 1-sentence supporting description.
+SECTION 7 — PHOTO GALLERY
+3-column masonry grid using all available project images.
+Lightbox on click (use react-photo-album or a lightweight custom implementation).
+Mobile: 2 columns.
+Smooth hover scale effect (Tailwind transition).
+No category filters unless image count exceeds 40.
+SECTION 8 — TESTIMONIALS
+Desktop: 3-card static grid.
+Mobile: horizontally swipeable cards.
+
+All testimonials are placeholder content — clearly marked for admin editing.
+
+Card format:
+  ⭐⭐⭐⭐⭐
+  "We had an amazing experience and look forward to joining future Young Tots activities."
+  — Parent Testimonial Placeholder | Child aged [X]
+
+Do not fabricate real names. Mark each card with a subtle "placeholder" label visible only in admin/edit mode.
+SECTION 9 — FAQ
+Accordion component. One open at a time. Cover:
+
+Q: What age groups can attend?
+Q: How is my child kept safe during activities?
+Q: How does transport work?
+Q: What meals are provided?
+Q: What happens in a medical emergency?
+Q: How do I make payment?
+Q: What is the cancellation policy?
+
+Use Tailwind transitions for smooth accordion open/close.
+SECTION 10 — REGISTRATION WIZARD
+3-step form with progress indicator.
+
+Step 1 — Parent & Child Info:
+  Parent Name, Phone, Email
+  Child Name, Date of Birth, Age
+
+Step 2 — Medical & Consent:
+  Medical Conditions (textarea)
+  Allergies (textarea)
+  Emergency Contact Name
+  Emergency Contact Phone
+  Consent checkbox (required): "I confirm I have read and agree to the terms and conditions..."
+
+Step 3 — Payment:
+  Display M-Pesa details (see Section 11)
+  Payment Reference Number (text input)
+  Payment Screenshot (file upload → store to Supabase Storage)
+
+On submit:
+  Generate registration_ref as YT-2026-[4-digit random]
+  Save all fields to Supabase registrations table
+  Show ConfirmationPage component with ref number and next steps
+SECTION 11 — PAYMENT DETAILS
+Display clearly before and during Step 3:
+
+M-Pesa Payments — Send to:
+
+  Judie Wambua      0720 764 275
+  Celestine Sabuti  0724 810 846
+
+Amount: KSh 21,500
+Use child's name as M-Pesa reference.
+
+After payment, return to the form and upload your screenshot.
+SECTION 12 — TEAM (CONDITIONAL)
+Only render this section if real photos of Judie Wambua and Celestine Sabuti exist in the project assets.
+If no real photos are found, skip this section entirely.
+Do not use avatar placeholders or initials circles for the team section.
+SECTION 13 — CONTACT
+WhatsApp button → https://wa.me/254720764275
+Call button → tel:+254720764275
+Basic contact form (name, message — no backend required in this phase)
+Google Maps embed — "Outside Cavina School, Kilungu Road, Nairobi"
+SECTION 14 — STICKY MOBILE FOOTER
+Fixed to bottom on mobile only (hidden on desktop).
+Always visible while scrolling.
+
+Content:
+  Summer Safari 2026 | KSh 21,500
+  [Reserve My Child's Slot]
+
+Background: #F59E0B
+Text: #0F172A
+Height: 64px max.
+Do not obscure page content — add 64px bottom padding to main layout on mobile.
+FINAL QUALITY CHECK — RUN BEFORE COMPLETING
+Before marking the build as done, verify:
+
+☐ Hero content visible above fold on 390px mobile screen
+☐ All 14 sections render without console errors
+☐ Registration form saves to Supabase and returns a ref number
+☐ Payment screenshot uploads to Supabase Storage
+☐ Confirmation page displays ref number clearly
+☐ Sticky mobile footer visible and not obscuring content
+☐ Gallery lightbox works on mobile
+☐ FAQ accordion opens/closes smoothly
+☐ No hardcoded placeholder image URLs — only project assets used
+☐ All CTA buttons link to registration form
+☐ Colors match brand palette throughout
+☐ No section feels generic or AI-templated — if it does, redesign it
+Copy full prompt

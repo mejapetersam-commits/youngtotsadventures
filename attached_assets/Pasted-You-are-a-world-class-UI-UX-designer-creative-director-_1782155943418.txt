@@ -1,0 +1,534 @@
+You are a world-class UI/UX designer, creative director, conversion strategist, and senior full-stack developer. Your task is not to make minor improvements—your task is to transform the existing Young Tots Edventures website into a premium, professionally commissioned holiday-camp platform that rivals top-tier children's programs, international school holiday camps, and family adventure brands.
+
+The current website is functional but still feels AI-generated. Redesign it so it feels custom-designed, emotionally engaging, trustworthy, premium, and conversion-focused.
+
+## PRIMARY OBJECTIVE
+
+When a parent lands on the homepage, they should immediately think:
+
+"This looks professional."
+"My child would absolutely love this."
+"My child will be safe."
+"This is worth KSh 21,500."
+"I need to reserve a slot."
+
+The website should create an emotional connection before asking parents to register.
+
+---
+
+## DESIGN PHILOSOPHY
+
+Focus on:
+
+* Trust
+* Safety
+* Adventure
+* Discovery
+* Fun
+* Professionalism
+* Emotional storytelling
+
+Avoid generic AI-generated layouts.
+
+Avoid stock website sections that feel templated.
+
+Create a visually rich, premium experience using authentic Young Tots images throughout.
+
+Use professional spacing, strong typography hierarchy, elegant cards, subtle motion, and modern design patterns.
+
+The website should feel handcrafted.
+
+---
+
+## HERO SECTION (REDESIGN COMPLETELY)
+
+Create a cinematic full-screen hero section.
+
+Use a rotating slideshow featuring the best uploaded Young Tots photos.
+
+Apply subtle overlays and animations.
+
+Display:
+
+YOUNG TOTS EDVENTURES
+
+SUMMER SAFARI 2026
+
+5 Days of Adventure, Creativity & Discovery
+
+6th – 10th July 2026
+
+KSh 21,500 Per Child
+
+Buttons:
+
+Reserve My Child's Slot
+
+Explore the Safari
+
+Add trust badges:
+
+✓ Safe & Supervised
+
+✓ Transport Included
+
+✓ Meals Included
+
+✓ Limited Slots Available
+
+Add a live countdown timer.
+
+Display a subtle scroll indicator.
+
+The hero section should feel emotional, premium, and inspiring.
+
+---
+
+## SOCIAL PROOF SECTION
+
+Immediately after the hero, create a section called:
+
+Trusted by Parents. Loved by Children.
+
+Include:
+
+* Number of children served
+* Number of activities completed
+* Years of experience
+* Parent satisfaction metric
+
+If actual numbers are unavailable, use editable placeholders.
+
+Use attractive animated counters.
+
+---
+
+## WHY PARENTS CHOOSE YOUNG TOTS
+
+Create a premium icon-based section.
+
+Include:
+
+Safe & Structured Adventures
+
+Experienced & Caring Supervisors
+
+Organized Transportation
+
+Meals & Water Provided
+
+Educational Experiences
+
+Friendship & Confidence Building
+
+Each benefit should include supporting text and imagery.
+
+---
+
+## TYPICAL DAY EXPERIENCE
+
+Create a visual timeline.
+
+Answer the parent's biggest question:
+
+"What happens after I drop off my child?"
+
+Display:
+
+8:15 AM — Arrival & Check-In
+
+9:00 AM — Travel to Activity Venue
+
+10:00 AM — Guided Activities
+
+12:30 PM — Lunch & Break
+
+1:30 PM — Afternoon Experiences
+
+2:30 PM — Group Reflection & Wrap-Up
+
+3:00 PM — Pick-Up
+
+Use engaging visuals and icons.
+
+---
+
+## SUMMER SAFARI EXPERIENCE
+
+Redesign as premium experience cards.
+
+Each day should feel like a unique adventure.
+
+Include:
+
+Large feature image
+
+Image gallery
+
+Location badge
+
+Activity highlights
+
+What children will learn
+
+What children will enjoy
+
+### DAY 1
+
+Enanka Art Gallery – Westlands
+
+Creativity • Culture • Self-Expression
+
+### DAY 2
+
+The Jungle – Sarit Centre
+
+Adventure • Games • Teamwork
+
+### DAY 3
+
+Stedmak Gardens – Karen
+
+Animals • Outdoor Fun • Exploration
+
+### DAY 4
+
+Ginah's Bakery – Lavington
+
+Baking • Creativity • Practical Skills
+
+### DAY 5
+
+Movie Day – Junction Mall
+
+Celebration • Relaxation • Entertainment
+
+Create subtle transitions between sections.
+
+---
+
+## MEET THE TEAM
+
+Create a professional section introducing:
+
+Judie Wambua
+
+Celestine Sabuti
+
+Include:
+
+Professional photos (or placeholders)
+
+Short bios
+
+Commitment to child safety
+
+Commitment to learning through experience
+
+This section should build confidence and trust.
+
+---
+
+## PARENT TESTIMONIALS
+
+Move testimonials higher on the page.
+
+Use premium cards.
+
+Include:
+
+Parent photo
+
+Parent name
+
+Child age
+
+Testimonial
+
+Star rating
+
+Create carousel functionality.
+
+Allow easy editing from admin dashboard.
+
+---
+
+## WHAT'S INCLUDED
+
+Create a visually impressive pricing section.
+
+Display prominently:
+
+KSh 21,500
+
+What's Included:
+
+✓ Transport
+
+✓ Entry Fees
+
+✓ Lunch Daily
+
+✓ Drinking Water
+
+✓ Professional Supervision
+
+✓ Guided Activities
+
+✓ Safe Travel Arrangements
+
+✓ Memorable Experiences
+
+Add:
+
+Reserve My Child's Slot
+
+button.
+
+---
+
+## LIMITED SLOTS SECTION
+
+Create urgency without being pushy.
+
+Display:
+
+Limited Spaces Available
+
+Only X slots remaining
+
+Allow slot count to be edited in admin dashboard.
+
+Add a visual progress bar.
+
+---
+
+## PHOTO GALLERY
+
+Transform gallery into a premium experience.
+
+Features:
+
+* Masonry layout
+* Lightbox viewing
+* Hover animations
+* Category filtering
+* Smooth transitions
+
+Categories:
+
+Adventure
+
+Arts
+
+Learning
+
+Outdoor Activities
+
+Previous Events
+
+---
+
+## FAQ SECTION
+
+Answer concerns before parents ask.
+
+Include:
+
+Age requirements
+
+Safety procedures
+
+Transport arrangements
+
+Meals
+
+Medical emergencies
+
+Payment process
+
+Consent forms
+
+Cancellation policy
+
+---
+
+## REGISTRATION EXPERIENCE
+
+Redesign completely.
+
+The registration process should feel like onboarding, not paperwork.
+
+Use:
+
+Multi-step wizard
+
+Progress tracker
+
+Auto-save
+
+Success animations
+
+Mobile-first design
+
+Steps:
+
+1. Parent Information
+
+2. Child Information
+
+3. Medical Information
+
+4. Emergency Contacts
+
+5. Consent & Liability
+
+6. Payment Confirmation
+
+7. Review & Submit
+
+---
+
+## CONSENT & LIABILITY
+
+Create a premium digital signing experience.
+
+Include:
+
+Readable legal formatting
+
+Checkbox agreement
+
+Digital signature pad
+
+Timestamp
+
+PDF generation
+
+Admin access to signed forms
+
+---
+
+## PAYMENT EXPERIENCE
+
+Display:
+
+M-Pesa Payments
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+Allow:
+
+Screenshot upload
+
+Reference number entry
+
+Payment confirmation message
+
+Set status to Pending.
+
+---
+
+## MOBILE CONVERSION OPTIMIZATION
+
+Create a sticky mobile footer.
+
+Always visible.
+
+Display:
+
+Summer Safari 2026
+
+KSh 21,500
+
+Reserve My Child's Slot
+
+This should remain visible while scrolling.
+
+---
+
+## CONTACT SECTION
+
+Include:
+
+Call buttons
+
+WhatsApp buttons
+
+Contact form
+
+Google Maps integration
+
+Assembly location:
+
+Outside Cavina School, Kilungu Road
+
+---
+
+## MICRO-INTERACTIONS
+
+Add:
+
+Hover animations
+
+Smooth transitions
+
+Loading skeletons
+
+Animated counters
+
+Parallax effects where appropriate
+
+Elegant button interactions
+
+Subtle section reveals on scroll
+
+The website should feel alive without feeling distracting.
+
+---
+
+## ADMIN DASHBOARD
+
+Create a professional management dashboard.
+
+Features:
+
+* View registrations
+* Search participants
+* View medical information
+* View consent forms
+* View payment proofs
+* Update payment status
+* Export CSV
+* Export Excel
+* Manage galleries
+* Manage testimonials
+* Manage FAQs
+* Manage slot availability
+* Manage homepage banners
+
+---
+
+## FINAL QUALITY CHECK
+
+Before completion, review every page and ask:
+
+Would a parent confidently pay KSh 21,500 after visiting this website?
+
+Does the website feel professionally commissioned?
+
+Does it feel trustworthy?
+
+Does it communicate safety?
+
+Does it create excitement?
+
+Does it look better than a typical AI-generated site?
+
+Keep refining until the answer to all of the above is YES.
+
+The final result should feel like a premium children's adventure booking platform that could realistically be used by a leading holiday camp organization in Kenya.
