@@ -1,0 +1,503 @@
+You are an expert UI/UX designer, conversion-focused product designer, and senior full-stack developer. Completely redesign and upgrade the existing Young Tots Edventures website into a premium, modern, highly visual booking platform for parents.
+
+The goal is to create a website that looks and feels comparable to a premium holiday camp, children's adventure center, or international school holiday program—not a basic registration website.
+
+## WEBSITE BRANDING
+
+Website Name:
+Young Tots Edventures
+
+Website URL:
+youngtots.replit.app
+
+Update all branding, page titles, metadata, navigation, footer, and SEO settings to use:
+
+youngtots.replit.app
+
+Browser Title:
+Young Tots Edventures | Summer Safari 2026
+
+Meta Description:
+Join Young Tots Edventures Summer Safari 2026, a 5-day adventure filled with creativity, exploration, learning, and fun across Nairobi. Register today and secure your child's slot.
+
+Footer:
+© 2026 Young Tots Edventures. All Rights Reserved.
+youngtots.replit.app
+
+Use the Young Tots logo as the favicon.
+
+---
+
+## PROGRAM DETAILS
+
+Program Name:
+Summer Safari 2026
+
+Dates:
+Monday 6th July 2026 – Friday 10th July 2026
+
+Price:
+KSh 21,500 Per Child
+
+Assembly Point:
+Outside Cavina School, Kilungu Road
+
+Reporting Time:
+8:15 AM Daily
+
+Pick-Up Time:
+3:00 PM Daily
+
+Payment Contacts:
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+---
+
+## DESIGN DIRECTION
+
+Create a vibrant, premium, trustworthy, and highly visual experience.
+
+Use:
+
+* Full-width image banners
+* Modern card layouts
+* Subtle animations
+* Hover effects
+* Smooth scrolling
+* Premium typography
+* Mobile-first responsive design
+* Adventure-themed icons
+* Safari-inspired design elements
+* Professional spacing and visual hierarchy
+
+Use uploaded Young Tots images extensively throughout the website.
+
+Prioritize real Young Tots activity photos over stock images.
+
+Every major section should include imagery.
+
+The website should immediately communicate:
+
+Safety
+Fun
+Adventure
+Trust
+Professionalism
+Value
+
+---
+
+## HERO SECTION
+
+Create a stunning full-screen hero section.
+
+Use a rotating image slider featuring uploaded Young Tots activity photos.
+
+Display:
+
+YOUNG TOTS EDVENTURES
+
+SUMMER SAFARI 2026
+
+Adventure • Discovery • Learning • Fun
+
+6th – 10th July 2026
+
+KSh 21,500 Per Child
+
+Buttons:
+
+Register Now
+
+View Activities
+
+Display:
+
+Limited Slots Available
+
+Add a live countdown timer to the start date.
+
+---
+
+## WHY PARENTS CHOOSE YOUNG TOTS
+
+Create a premium trust-building section immediately below the hero.
+
+Include:
+
+✓ Safe & Supervised Environment
+
+✓ Trained and Caring Professionals
+
+✓ Organized Transport
+
+✓ Lunch & Water Provided Daily
+
+✓ Fun Educational Experiences
+
+✓ Carefully Planned Activities
+
+✓ Child-Centered Learning
+
+✓ Memorable Holiday Adventures
+
+Use icons, photos, and statistics.
+
+---
+
+## SUMMER SAFARI EXPERIENCE
+
+Create an interactive visual timeline.
+
+Each day should have:
+
+* Large featured image
+* Activity gallery
+* Highlights
+* Location information
+
+### DAY 1
+
+Monday 6th July 2026
+
+Enanka Art Gallery (Westlands)
+
+Highlights:
+
+* Creativity
+* Art exploration
+* Self-expression
+* Kenyan culture
+
+### DAY 2
+
+Tuesday 7th July 2026
+
+The Jungle – Pins Entertainment (Sarit Centre)
+
+Highlights:
+
+* Interactive games
+* Adventure activities
+* Team building
+* Fun challenges
+
+### DAY 3
+
+Wednesday 8th July 2026
+
+Stedmak Gardens & Recreation Centre (Karen)
+
+Highlights:
+
+* Animal park
+* Train rides
+* Trampolines
+* Bouncing castles
+* Rock climbing
+* Floating restaurant
+
+### DAY 4
+
+Thursday 9th July 2026
+
+Ginah’s Bakery (Lavington)
+
+Highlights:
+
+* Baking
+* Cake decorating
+* Cookie making
+* Practical life skills
+
+### DAY 5
+
+Friday 10th July 2026
+
+Movie Day (Junction Mall)
+
+Highlights:
+
+* Exclusive movie experience
+* 3D animated film
+* Celebration day
+
+---
+
+## WHAT'S INCLUDED
+
+Create a premium pricing section.
+
+Display prominently:
+
+KSh 21,500 Per Child
+
+Package Includes:
+
+✓ Transport
+
+✓ Entry Fees
+
+✓ Lunch Daily
+
+✓ Drinking Water
+
+✓ Professional Supervision
+
+✓ All Activities
+
+✓ Group Coordination
+
+✓ Safe Travel Arrangements
+
+Include a prominent Register Now button.
+
+---
+
+## PHOTO GALLERY
+
+Create a visually impressive gallery using uploaded photos.
+
+Features:
+
+* Masonry layout
+* Lightbox viewer
+* Hover animations
+* Category filters
+
+Categories:
+
+* Adventures
+* Learning
+* Arts & Creativity
+* Outdoor Activities
+* Previous Events
+
+---
+
+## TESTIMONIALS
+
+Create a modern testimonial section.
+
+Use attractive testimonial cards.
+
+Allow easy editing from the admin dashboard.
+
+Include parent photo placeholders.
+
+---
+
+## FAQ SECTION
+
+Include:
+
+What age groups can attend?
+
+What is included in the fee?
+
+How do children travel?
+
+Who supervises the children?
+
+What should children carry?
+
+How do I make payment?
+
+What happens in case of an emergency?
+
+How do I sign the consent form?
+
+---
+
+## REGISTRATION SYSTEM
+
+Create a modern multi-step registration process.
+
+Step 1:
+Parent/Guardian Information
+
+* Full Name
+* Phone Number
+* Email
+
+Step 2:
+Child Information
+
+* Full Name
+* Date of Birth
+* Age
+* Address
+
+Step 3:
+Medical Information
+
+* Allergies
+* Medical Conditions
+* Physical Limitations
+* Special Notes
+
+Step 4:
+Emergency Contacts
+
+* Contact Name
+* Relationship
+* Phone Number
+
+Step 5:
+Consent & Liability Form
+
+Step 6:
+Payment Confirmation
+
+Display progress indicators.
+
+Auto-save progress.
+
+Fully mobile optimized.
+
+---
+
+## DIGITAL CONSENT & LIABILITY FORM
+
+Display the complete parental consent and liability waiver.
+
+Include:
+
+* Acceptance checkbox
+* Parent/Guardian Name
+* Digital signature pad
+* Date signed
+* Automatic timestamp
+
+Store signatures securely in Supabase.
+
+Allow admin viewing.
+
+---
+
+## PAYMENT CONFIRMATION
+
+Display:
+
+M-Pesa Payment Contacts
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+Allow:
+
+* Screenshot upload
+* Transaction reference input
+
+Store securely.
+
+Set payment status to Pending by default.
+
+---
+
+## SUCCESS PAGE
+
+After registration display:
+
+Registration Successful
+
+Thank you for registering for Young Tots Summer Safari 2026.
+
+Generate:
+
+* Registration Number
+* Registration Summary
+* Next Steps
+
+Include:
+
+Download Registration Summary
+
+---
+
+## CONTACT SECTION
+
+Display prominently:
+
+Judie Wambua
+0720 764 275
+
+Celestine Sabuti
+0724 810 846
+
+Include:
+
+* Call buttons
+* WhatsApp buttons
+* Contact form
+* Location map
+
+---
+
+## FLOATING ACTION BUTTONS
+
+Visible throughout the website:
+
+* WhatsApp
+* Register Now
+
+---
+
+## ADMIN DASHBOARD
+
+Secure admin login.
+
+Features:
+
+* View registrations
+* Search participants
+* View medical information
+* View emergency contacts
+* View signed consent forms
+* View uploaded payment screenshots
+* Update payment status
+* Export CSV
+* Export Excel
+* Manage gallery photos
+* Manage homepage banners
+* Manage testimonials
+* Manage FAQs
+
+---
+
+## TECHNICAL REQUIREMENTS
+
+* React
+* Tailwind CSS
+* Node.js
+* Supabase PostgreSQL
+* Supabase Storage
+* SEO Optimized
+* Mobile Responsive
+* Fast Loading
+* Production Ready
+
+---
+
+## FINAL UI/UX REQUIREMENT
+
+Review the entire website from the perspective of a parent deciding whether to register a child.
+
+Focus heavily on:
+
+* Trust
+* Safety
+* Visual storytelling
+* Ease of registration
+* Mobile experience
+* Conversion rate
+
+Make the website feel premium, polished, modern, visually impressive, and worthy of a KSh 21,500 holiday program. Parents should immediately understand the value of the experience and feel confident registering their child within minutes.
