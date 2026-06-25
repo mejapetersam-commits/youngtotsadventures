@@ -169,6 +169,25 @@ paths:
                 $ref: "#/components/schemas/Registration"
         "404":
           description: Not found
+    delete:
+      operationId: deleteRegistration
+      tags: [admin]
+      summary: Delete a single registration (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deletion result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResult"
+        "404":
+          description: Not found
 
   /admin/registrations/{id}/payment-status:
     patch:
@@ -240,6 +259,14 @@ components:
           type: string
       required:
         - error
+
+    DeleteResult:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+        - id
 
     RegistrationInput:
       type: object

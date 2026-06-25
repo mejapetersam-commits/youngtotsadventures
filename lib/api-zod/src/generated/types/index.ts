@@ -8,6 +8,7 @@
 
 export * from './adminLoginInput';
 export * from './authToken';
+export * from './deleteResult';
 export * from './errorResponse';
 export * from './healthStatus';
 export * from './listRegistrationsParams';

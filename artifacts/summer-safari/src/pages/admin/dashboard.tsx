@@ -1,10 +1,11 @@
 import { Link } from "wouter";
-import { useGetStats, useListRegistrations, useExportRegistrations, getExportRegistrationsQueryKey } from "@workspace/api-client-react";
+import { useGetStats, useListRegistrations, useExportRegistrations, getExportRegistrationsQueryKey, useDeleteRegistration, getListRegistrationsQueryKey, getGetStatsQueryKey } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { format } from "date-fns";
 import { 
-  Users, CheckCircle2, Clock, XCircle, Search, FileDown, 
-  MapPin, LogOut, ChevronRight
+  Users, CheckCircle2, Clock, Search, FileDown, 
+  MapPin, LogOut, ChevronRight, Trash2, Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,45 @@ export default function AdminDashboard() {
   const { refetch: fetchExport, isFetching: isExporting } = useExportRegistrations({
     query: { enabled: false, queryKey: getExportRegistrationsQueryKey() }
   });
+
+  const queryClient = useQueryClient();
+  const deleteMutation = useDeleteRegistration();
+  const [isClearingAll, setIsClearingAll] = useState(false);
+
+  const refreshData = () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: getListRegistrationsQueryKey() }),
+      queryClient.invalidateQueries({ queryKey: getGetStatsQueryKey() }),
+    ]);
+
+  const handleDelete = async (id: number, childName: string) => {
+    if (!window.confirm(`Delete the registration for "${childName}"? This cannot be undone.`)) return;
+    try {
+      await deleteMutation.mutateAsync({ id });
+      await refreshData();
+    } catch {
+      window.alert("Could not delete this registration. Please try again.");
+    }
+  };
+
+  const handleClearAll = async () => {
+    const rows = registrationsData?.registrations ?? [];
+    if (rows.length === 0) return;
+    if (!window.confirm(`Delete the ${rows.length} registration(s) currently shown? This permanently removes them and cannot be undone.`)) return;
+    setIsClearingAll(true);
+    let deleted = 0;
+    try {
+      for (const reg of rows) {
+        await deleteMutation.mutateAsync({ id: reg.id });
+        deleted++;
+      }
+    } catch {
+      window.alert(`Deleted ${deleted} of ${rows.length}. Some could not be removed — please try again.`);
+    } finally {
+      await refreshData();
+      setIsClearingAll(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("admin_token");
@@ -149,6 +189,15 @@ export default function AdminDashboard() {
                 <FileDown className="h-4 w-4" />
                 Export CSV
               </Button>
+              <Button
+                variant="outline"
+                onClick={handleClearAll}
+                disabled={isClearingAll || (registrationsData?.registrations?.length ?? 0) === 0}
+                className="w-full sm:w-auto gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+              >
+                {isClearingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                Clear Shown{(registrationsData?.registrations?.length ?? 0) > 0 ? ` (${registrationsData?.registrations?.length})` : ""}
+              </Button>
             </div>
           </CardHeader>
           <CardContent className="p-0">
@@ -184,11 +233,22 @@ export default function AdminDashboard() {
                           {format(new Date(reg.createdAt), 'MMM d, yyyy')}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Link href={`/admin/registrations/${reg.id}`}>
-                            <a className="inline-flex items-center justify-center p-2 text-primary hover:bg-primary/10 rounded-md transition-colors">
-                              <ChevronRight className="h-5 w-5" />
-                            </a>
-                          </Link>
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(reg.id, reg.childName)}
+                              disabled={deleteMutation.isPending || isClearingAll}
+                              aria-label={`Delete registration for ${reg.childName}`}
+                              className="inline-flex items-center justify-center p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors disabled:opacity-50"
+                            >
+                              <Trash2 className="h-5 w-5" />
+                            </button>
+                            <Link href={`/admin/registrations/${reg.id}`}>
+                              <a className="inline-flex items-center justify-center p-2 text-primary hover:bg-primary/10 rounded-md transition-colors">
+                                <ChevronRight className="h-5 w-5" />
+                              </a>
+                            </Link>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))

@@ -13,6 +13,10 @@ export interface ErrorResponse {
   error: string;
 }
 
+export interface DeleteResult {
+  id: number;
+}
+
 export interface RegistrationInput {
   parentName: string;
   parentPhone: string;

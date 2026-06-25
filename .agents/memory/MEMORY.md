@@ -1,0 +1,1 @@
+- [Production DB is read-only via tools](prod-db-readonly.md) — to mutate live data (e.g. clear test registrations) you must build an admin feature + republish; executeSql production is SELECT-only.

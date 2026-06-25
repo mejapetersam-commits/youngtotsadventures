@@ -198,6 +198,18 @@ export const GetRegistrationResponse = zod.object({
 
 
 /**
+ * @summary Delete a single registration (admin)
+ */
+export const DeleteRegistrationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteRegistrationResponse = zod.object({
+  "id": zod.number()
+})
+
+
+/**
  * @summary Update payment status (admin)
  */
 export const UpdatePaymentStatusParams = zod.object({

@@ -7,6 +7,7 @@ import {
   UpdatePaymentStatusParams,
   UpdatePaymentStatusBody,
   GetRegistrationParams,
+  DeleteRegistrationParams,
 } from "@workspace/api-zod";
 import jwt from "jsonwebtoken";
 
@@ -150,6 +151,25 @@ router.get("/admin/registrations/:id", requireAdmin, async (req, res) => {
   }
 
   return res.json(serializeRegistration(registration));
+});
+
+// DELETE /admin/registrations/:id
+router.delete("/admin/registrations/:id", requireAdmin, async (req, res) => {
+  const paramsParsed = DeleteRegistrationParams.safeParse({ id: Number(req.params.id) });
+  if (!paramsParsed.success) {
+    return res.status(400).json({ error: "Invalid id" });
+  }
+
+  const [deleted] = await db
+    .delete(registrationsTable)
+    .where(eq(registrationsTable.id, paramsParsed.data.id))
+    .returning();
+
+  if (!deleted) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  return res.json({ id: deleted.id });
 });
 
 // PATCH /admin/registrations/:id/payment-status
