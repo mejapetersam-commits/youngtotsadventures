@@ -1,0 +1,58 @@
+# Registration Website Content & Gallery Updates
+
+Please make the following updates to the website:
+
+## 1. Age Range Update
+
+* Update the participant age range throughout the website to:
+  **4–12 years**
+* Ensure this change is reflected consistently across:
+
+  * Registration forms
+  * Program information sections
+  * Eligibility requirements
+  * Confirmation messages
+  * Admin dashboard
+  * Any other references to participant age
+
+## 2. Registration Success Message Update
+
+After a parent/guardian successfully submits a registration, update the confirmation message so that items **3** and **4** read exactly as follows:
+
+**3.** A WhatsApp group will be created for all participating parents/guardians to facilitate seamless communication and provide daily updates throughout the tour.
+
+**4.** A Tour Information Guide containing important details and useful information will be shared via the WhatsApp group closer to the start date.
+
+## 3. Adventure in Pictures Section
+
+### A. Remove Two Rivers Logo
+
+* In the **Adventure in Pictures** section, the Century Cinemax image contains a visible **Two Rivers** logo.
+* Remove the logo completely.
+* Ensure the edited image looks clean, natural, and professionally retouched without any obvious signs of editing.
+
+### B. Replace Gallery Images
+
+* Replace all current images in the **Adventure in Pictures** section with the new images I will provide.
+* Optimize the images for fast loading while maintaining high quality.
+* Ensure they display correctly on desktop, tablet, and mobile devices.
+* Maintain consistent aspect ratios and a clean, premium gallery layout.
+* If cropping is required, crop intelligently to preserve the main subjects and visual appeal.
+
+### C. Improve Gallery Design
+
+* Refine the gallery to give it a premium, modern appearance.
+* Add subtle hover effects and smooth transitions.
+* Ensure consistent spacing, alignment, and styling across all images.
+* Preserve accessibility and loading performance.
+
+## 4. Verification
+
+Before considering the task complete, verify that:
+
+* The participant age is displayed as **4–12 years** everywhere on the website.
+* The updated registration success message displays the new wording for items 3 and 4 exactly as provided.
+* The Two Rivers logo has been completely removed from the Century Cinemax image.
+* All replacement images have been successfully uploaded and displayed in the **Adventure in Pictures** section.
+* The gallery is fully responsive and displays correctly across desktop, tablet, and mobile devices.
+* All formatting, spacing, and typography remain clean, consistent, and professional throughout the website.

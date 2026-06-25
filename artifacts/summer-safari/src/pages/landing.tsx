@@ -7,35 +7,42 @@ import { Badge } from "@/components/ui/badge";
 import {
   MapPin, Calendar, Clock, Bus, Apple, PhoneCall, MessageCircle,
   ChevronRight, Check, CheckCircle2, Users, Shield, Heart,
-  ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils
+  ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils,
+  Mail, Compass, BookOpen, Leaf, PartyPopper
 } from "lucide-react";
 import { useGetRegistrationCount } from "@workspace/api-client-react";
 
 // Real Images
 import enankaLogo from "@assets/Enanka_art_gallery_logo_1781863628482.png";
-import enankaGallery from "@assets/Enanka_art_gallery_1781863628482.webp";
-import enankaClay from "@assets/Enanka__1781863628482.jpg";
-import enankaArt from "@assets/Enanka_art_1781863628482.webp";
+import enankaPaintings from "@assets/Enanka_1_1782420466047.jpg";
+import enankaPainting from "@assets/Enanka_7_1782420523829.jpg";
 
-import pinsJungle from "@assets/kids_jungle_-_pins_1781863628483.webp";
 import pinsLogo from "@assets/Pins_logo_1781863628483.jpg";
+import pinsBowling from "@assets/Pins_1_1782420615995.jpg";
+import pinsSlides from "@assets/Pins_2_1782420640979.jpg";
+import pinsPlayground from "@assets/Pins_5_1782420667125.jpeg";
 
 import stedmakLogo from "@assets/Stedmak_hotels_&_gardens_logo_1781863628483.jpg";
-import stedmakLion from "@assets/Stedmak_zoo_1781863628484.jpg";
-import stedmakLovebird from "@assets/Stedmak_zoo_2_1781863628483.jpg";
+import stedmakNight from "@assets/Stedmak_1_1782420736044.jpg";
+import stedmakAerial from "@assets/Stedmak_2_1782420750496.jpg";
+import stedmakPlayground from "@assets/Stedmak_4_1782420793986.jpg";
 
 import ginahLogo from "@assets/Ginah's_bakery_1781863628482.png";
-import ginahCookies from "@assets/Ginah's_1781863628482.jpg";
+import ginahCake from "@assets/Gina_3_1782420545576.jpg";
+import ginahCupcakes from "@assets/Gina_4_1782420577959.jpg";
+import ginahSafariCake from "@assets/Gina_5_1782420597645.jpg";
 
 import cinemaxLogo from "@assets/Cinemax_logo_1781863560866.png";
-import cinemaxInterior from "@assets/Century_cinemax_1781863628481.jpg";
+import centuryConcession from "@assets/Century_1_1782420390082.jpeg";
+import centuryOrange from "@assets/Century_3_1782420407142.jpg";
+import centuryImax from "@assets/Century_4_1782420416012.jpg";
 
 const HERO_SLIDES = [
-  { src: enankaGallery, alt: "Art Gallery – Day 1", caption: "Day 1 · Enanka Art Gallery" },
-  { src: pinsJungle, alt: "Kids Jungle – Day 2", caption: "Day 2 · Pins Entertainment" },
-  { src: stedmakLion, alt: "Animal Park – Day 3", caption: "Day 3 · Stedmak Gardens" },
-  { src: ginahCookies, alt: "Baking – Day 4", caption: "Day 4 · Ginah's Bakery" },
-  { src: cinemaxInterior, alt: "Movie Day – Day 5", caption: "Day 5 · Movie Celebration" },
+  { src: enankaPaintings, alt: "Art Gallery – Day 1", caption: "Day 1 · Enanka Art Gallery" },
+  { src: pinsPlayground, alt: "Kids Playground – Day 2", caption: "Day 2 · Pins Entertainment" },
+  { src: stedmakAerial, alt: "Adventure Park – Day 3", caption: "Day 3 · Stedmak Gardens" },
+  { src: ginahSafariCake, alt: "Baking – Day 4", caption: "Day 4 · Ginah's Bakery" },
+  { src: centuryImax, alt: "Movie Day – Day 5", caption: "Day 5 · Movie Celebration" },
 ];
 
 const SAFARI_START = new Date("2026-07-06T08:15:00+03:00");
@@ -75,7 +82,7 @@ const FAQS = [
     a: "The Summer Safari is designed for children aged 4–12 years. All activities are carefully selected to be age-appropriate and engaging for this range.",
   },
   {
-    q: "What is included in the KSh 21,500 fee?",
+    q: "What is included in the KES 21,500 fee?",
     a: "The fee covers transport to and from all venues, all entry fees and activity costs, lunch and drinking water daily, art materials, baking supplies, and full professional supervision throughout the program.",
   },
   {
@@ -92,7 +99,7 @@ const FAQS = [
   },
   {
     q: "How do I make payment?",
-    a: "Payment is made via M-Pesa. Send the full amount of KSh 21,500 to Judie Wambua (0720 764 275) or Celestine Sabuti (0724 810 846). Upload your M-Pesa screenshot during registration to confirm payment.",
+    a: "Payment is made via M-Pesa. Send the full amount of KES 21,500 to Judie Wambua (0720 764 275) or Celestine Sabuti (0724 810 846). Upload your M-Pesa screenshot during registration to confirm payment.",
   },
   {
     q: "What happens in case of an emergency?",
@@ -218,6 +225,8 @@ export default function Landing() {
             <button
               key={i}
               onClick={() => setSlideIdx(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === slideIdx}
               className={`h-2 rounded-full transition-all ${i === slideIdx ? "w-6 bg-primary" : "w-2 bg-white/50"}`}
             />
           ))}
@@ -246,7 +255,7 @@ export default function Landing() {
               Adventure • Discovery • Learning • Fun
             </motion.p>
             <motion.p variants={item} className="text-base md:text-lg text-white/70 mb-8">
-              6th – 10th July 2026 &nbsp;·&nbsp; Nairobi, Kenya &nbsp;·&nbsp; KSh 21,500 / child
+              6th – 10th July 2026 &nbsp;·&nbsp; Nairobi, Kenya &nbsp;·&nbsp; KES 21,500 / child
             </motion.p>
 
             {/* Countdown */}
@@ -349,7 +358,7 @@ export default function Landing() {
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-r from-secondary to-secondary/90 rounded-3xl p-8 text-white text-center">
             {[
               { n: "5", l: "Exciting Days" },
-              { n: "Ages 5–14", l: "Welcome" },
+              { n: "Ages 4–12", l: "Welcome" },
               { n: "30", l: "Limited Slots" },
               { n: "100%", l: "Supervised" },
             ].map(({ n, l }) => (
@@ -372,10 +381,26 @@ export default function Landing() {
             Get ready for an unforgettable Summer Safari filled with adventure, discovery, laughter, and endless fun. Our carefully designed 5-day experience combines exciting excursions, creative activities, and enriching experiences that inspire curiosity, build confidence, and create lasting friendships.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            {["Nairobi, Kenya", "Mon 6 – Fri 10 July 2026", "8:15 AM – 3:00 PM Daily", "Assembly: Cavina School, Kilungu Rd"].map(t => (
+            {["Nairobi, Kenya", "Mon 6 – Fri 10 July 2026", "Ages 4–12", "8:15 AM – 3:00 PM Daily", "Assembly: Cavina School, Kilungu Rd"].map(t => (
               <span key={t} className="bg-white text-secondary font-medium text-sm px-4 py-2 rounded-full shadow-sm border border-border">
                 {t}
               </span>
+            ))}
+          </div>
+
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            {[
+              { icon: Compass, label: "Adventure" },
+              { icon: BookOpen, label: "Learning" },
+              { icon: Leaf, label: "Nature" },
+              { icon: PartyPopper, label: "Fun" },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex flex-col items-center gap-2 bg-white rounded-2xl py-5 px-3 shadow-sm border border-border">
+                <div className="bg-primary/10 p-3 rounded-full">
+                  <Icon className="h-6 w-6 text-primary" />
+                </div>
+                <span className="font-bold text-secondary">{label}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -402,10 +427,9 @@ export default function Landing() {
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
-                    <div className="grid grid-cols-2 grid-rows-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={enankaGallery} alt="Gallery Setup" className="w-full h-full object-cover col-span-2 row-span-1 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={enankaClay} alt="Clay Pottery" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={enankaArt} alt="Art Studio" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
+                      <img src={enankaPaintings} alt="Art exhibition" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={enankaPainting} alt="Child painting" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
@@ -431,8 +455,12 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row-reverse">
-                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-green-50">
-                    <img src={pinsJungle} alt="Jungle Playground" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="w-full md:w-2/5 p-1 bg-green-50 overflow-hidden">
+                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
+                      <img src={pinsPlayground} alt="Indoor playground" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
+                      <img src={pinsSlides} alt="Play slides" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={pinsBowling} alt="Bowling" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -459,8 +487,9 @@ export default function Landing() {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
                     <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden min-h-[260px]">
-                      <img src={stedmakLion} alt="Animal Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakLovebird} alt="Bird Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakAerial} alt="Adventure park" className="w-full h-full object-cover min-h-[260px] col-span-2 group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakPlayground} alt="Playground" className="w-full h-full object-cover min-h-[200px] group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakNight} alt="Gardens" className="w-full h-full object-cover min-h-[200px] group-hover:scale-105 transition-transform duration-700" />
                     </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
@@ -486,8 +515,12 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row-reverse">
-                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-amber-50">
-                    <img src={ginahCookies} alt="Baking cookies" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
+                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
+                      <img src={ginahSafariCake} alt="Safari cake" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
+                      <img src={ginahCupcakes} alt="Safari cupcakes" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={ginahCake} alt="Decorated cake" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -512,8 +545,12 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
-                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-slate-900">
-                    <img src={cinemaxInterior} alt="Cinema Interior" className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+                  <div className="w-full md:w-2/5 p-1 bg-slate-900 overflow-hidden">
+                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
+                      <img src={centuryImax} alt="IMAX cinema" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
+                      <img src={centuryOrange} alt="Cinema hall" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={centuryConcession} alt="Concession stand" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -554,14 +591,20 @@ export default function Landing() {
 
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
             {[
-              { src: pinsJungle, alt: "Kids at the Jungle" },
-              { src: ginahCookies, alt: "Baking Day" },
-              { src: enankaClay, alt: "Clay Pottery" },
-              { src: enankaArt, alt: "Art Studio" },
-              { src: enankaGallery, alt: "Art Gallery" },
-              { src: stedmakLion, alt: "Animal Park" },
-              { src: stedmakLovebird, alt: "Bird Park" },
-              { src: cinemaxInterior, alt: "Movie Night" },
+              { src: enankaPaintings, alt: "Art exhibition" },
+              { src: pinsPlayground, alt: "Indoor playground" },
+              { src: ginahSafariCake, alt: "Safari celebration cake" },
+              { src: stedmakAerial, alt: "Adventure park" },
+              { src: enankaPainting, alt: "Child painting" },
+              { src: pinsBowling, alt: "Bowling lanes" },
+              { src: ginahCupcakes, alt: "Safari cupcakes" },
+              { src: centuryImax, alt: "IMAX cinema" },
+              { src: stedmakPlayground, alt: "Outdoor playground" },
+              { src: pinsSlides, alt: "Play slides" },
+              { src: ginahCake, alt: "Decorated cake" },
+              { src: centuryOrange, alt: "Cinema hall" },
+              { src: stedmakNight, alt: "Gardens at night" },
+              { src: centuryConcession, alt: "Cinema concession" },
             ].map(({ src, alt }, i) => (
               <motion.div
                 key={i}
@@ -635,7 +678,7 @@ export default function Landing() {
                 <CardContent className="p-8 md:p-10">
                   <h3 className="text-xl font-serif font-bold text-amber-100 mb-1">Safari Package</h3>
                   <div className="flex items-end gap-2 mb-6">
-                    <span className="text-5xl md:text-6xl font-bold">KSh 21,500</span>
+                    <span className="text-5xl md:text-6xl font-bold">KES 21,500</span>
                     <span className="text-amber-200/70 mb-2">/ child</span>
                   </div>
                   <ul className="space-y-3 mb-8">
@@ -663,6 +706,75 @@ export default function Landing() {
                 </CardContent>
               </Card>
             </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Giving Back / Partnership ── */}
+      <section className="py-24 px-4 bg-secondary text-white relative overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-80 h-80 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-accent/20 rounded-full blur-3xl" />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="text-center mb-12">
+            <motion.span variants={item} className="inline-block py-1 px-3 rounded-full bg-primary/20 text-primary font-semibold text-sm mb-4 uppercase tracking-wide">
+              Corporate Social Investment
+            </motion.span>
+            <motion.h2 variants={item} className="text-4xl md:text-5xl font-serif font-bold mb-4 text-white">
+              Adventure with a Purpose
+            </motion.h2>
+            <motion.p variants={item} className="text-white/80 text-lg max-w-2xl mx-auto font-light">
+              Young Tots Edventures is proud to partner with <span className="font-semibold text-primary">Goal4Initiative</span> as part of our Corporate Social Investment. <span className="font-semibold text-white">KES 1,000 from every child's registration fee</span> is donated directly to Goal4Initiative.
+            </motion.p>
+          </motion.div>
+
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid sm:grid-cols-2 gap-5 mb-12">
+            {[
+              { icon: Sparkles, t: "Early Childhood Development", d: "Supporting ECDE programmes for young learners." },
+              { icon: Heart, t: "Learning for All", d: "Resources for children with disabilities." },
+              { icon: Award, t: "Teacher Support", d: "Training and support for dedicated educators." },
+              { icon: Users, t: "Better Environments", d: "Improved learning spaces for vulnerable learners." },
+            ].map(({ icon: Icon, t, d }) => (
+              <motion.div key={t} variants={item}>
+                <div className="flex gap-4 items-start bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/15 h-full">
+                  <div className="bg-primary/20 p-2.5 rounded-full shrink-0">
+                    <Icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1">{t}</h4>
+                    <p className="text-white/70 text-sm">{d}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Optional voluntary donation */}
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item}>
+            <div className="bg-white text-foreground rounded-3xl p-8 md:p-10 shadow-2xl max-w-3xl mx-auto">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="bg-primary/10 p-2.5 rounded-full">
+                  <Heart className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold">Make an Optional Contribution</h3>
+              </div>
+              <p className="text-muted-foreground mb-6">
+                Beyond your registration, you are warmly invited to make a voluntary contribution directly to Goal4Initiative. Every shilling helps a child learn and thrive.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
+                  <p className="text-xs uppercase tracking-wide text-amber-700 font-semibold mb-1">M-PESA Paybill Number</p>
+                  <p className="text-3xl font-bold text-amber-900">891300</p>
+                </div>
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-center">
+                  <p className="text-xs uppercase tracking-wide text-amber-700 font-semibold mb-1">Account Number</p>
+                  <p className="text-3xl font-bold text-amber-900">101531</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-start bg-muted/50 rounded-xl p-4 text-sm text-muted-foreground">
+                <CheckCircle2 className="h-5 w-5 text-secondary shrink-0 mt-0.5" />
+                <p>For transparency and accountability, we kindly ask that you share your M-Pesa confirmation message with us after making a donation.</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -785,6 +897,12 @@ export default function Landing() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mt-6 pt-6 border-t border-white/20 flex flex-col sm:flex-row items-center justify-center gap-2 text-white/90">
+              <Mail className="h-4 w-4" />
+              <a href="mailto:youngtotsedventures@gmail.com" className="font-medium hover:text-white underline-offset-4 hover:underline">
+                youngtotsedventures@gmail.com
+              </a>
             </div>
           </div>
         </div>

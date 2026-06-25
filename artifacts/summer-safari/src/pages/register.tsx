@@ -24,7 +24,7 @@ const step1Schema = z.object({
 const step2Schema = z.object({
   childName: z.string().min(2, "Child's name is required"),
   childDateOfBirth: z.string().min(1, "Date of birth is required"),
-  childAge: z.coerce.number().min(1, "Age is required"),
+  childAge: z.coerce.number().min(4, "Children must be aged 4–12").max(12, "Children must be aged 4–12"),
   homeAddress: z.string().min(5, "Address is required"),
 });
 
@@ -207,7 +207,11 @@ export default function Register() {
                   </li>
                   <li className="flex gap-2">
                     <span className="font-bold">3.</span>
-                    <span>A packing list will be sent closer to the start date.</span>
+                    <span>A WhatsApp group will be created for all participating parents/guardians to facilitate seamless communication and provide daily updates throughout the tour.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="font-bold">4.</span>
+                    <span>A Tour Information Guide containing important details and useful information will be shared via the WhatsApp group closer to the start date.</span>
                   </li>
                 </ul>
               </div>
@@ -331,8 +335,8 @@ export default function Register() {
                         name="childAge"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Age</FormLabel>
-                            <FormControl><Input type="number" min="0" {...field} /></FormControl>
+                            <FormLabel>Age (4–12)</FormLabel>
+                            <FormControl><Input type="number" min="4" max="12" {...field} /></FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -579,7 +583,7 @@ export default function Register() {
                     <div className="border-t pt-6">
                       <h3 className="font-bold text-lg mb-4">Payment Instructions</h3>
                       <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg mb-4">
-                        <p className="font-bold text-amber-900 mb-2">Total Amount: KSh 21,500</p>
+                        <p className="font-bold text-amber-900 mb-2">Total Amount: KES 21,500</p>
                         <p className="text-amber-800 text-sm mb-4">Please send the payment via M-Pesa to either of the following numbers:</p>
                         <ul className="text-amber-900 font-medium space-y-2 bg-white p-3 rounded border border-amber-100">
                           <li>Judie Wambua: <span className="text-primary text-lg ml-2">0720 764 275</span></li>

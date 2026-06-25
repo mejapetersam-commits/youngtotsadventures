@@ -1,0 +1,137 @@
+Based on the poster you've shared, here's a comprehensive prompt that combines all the previous requests and includes the new content updates reflected in the poster.
+
+# Website Content, Design & Gallery Updates
+
+Please update the website to align with the latest Summer Safari 2026 promotional artwork and information.
+
+## 1. Age Range Update
+
+* Update the participant age range throughout the website to:
+  **4–12 years**
+* Ensure this change is reflected consistently across:
+
+  * Registration forms
+  * Program information sections
+  * Eligibility requirements
+  * Confirmation messages
+  * Admin dashboard
+  * Any other references to participant age
+
+## 2. Registration Success Message
+
+After a parent/guardian successfully submits a registration, update the confirmation message so that items **3** and **4** read exactly as follows:
+
+**3.** A WhatsApp group will be created for all participating parents/guardians to facilitate seamless communication and provide daily updates throughout the tour.
+
+**4.** A Tour Information Guide containing important details and useful information will be shared via the WhatsApp group closer to the start date.
+
+## 3. Update Website Content Using the Attached Poster
+
+Use the attached Summer Safari 2026 poster as the primary reference and update the website to reflect the latest information wherever appropriate.
+
+Specifically update or add the following:
+
+### Programme Details
+
+* Dates: **July 6th – July 10th, 2026**
+* Age Group: **4–12 years**
+* Registration Fee: **KES 21,500 per child**
+* Activities:
+
+  * Adventure
+  * Learning
+  * Nature
+  * Fun
+
+### Partnership Section
+
+Add or update a section explaining the partnership with **Goal4Initiative**, highlighting that:
+
+* Young Tots Edventures is partnering with Goal4Initiative as part of its Corporate Social Investment (CSI).
+* KES 1,000 from every child's registration fee is donated directly to Goal4Initiative.
+* The initiative supports:
+
+  * Early Childhood Development (ECDE) programmes.
+  * Learning resources for children with disabilities.
+  * Teacher support and training.
+  * Improved learning environments for vulnerable learners.
+
+### Optional Additional Support
+
+Add an optional section informing parents that they may make voluntary contributions directly to Goal4Initiative.
+
+Display the following payment details exactly as shown:
+
+* **M-PESA Paybill Number:** 891300
+* **Account Number:** 101531
+
+Include a short accountability statement encouraging parents to share their M-Pesa confirmation message after making a donation.
+
+### Contact Details
+
+Update or confirm the contact section includes:
+
+* WhatsApp:
+
+  * 0720764275
+  * 0724810846
+* Email:
+
+  * [youngtotsedventures@gmail.com](mailto:youngtotsedventures@gmail.com)
+
+## 4. Adventure in Pictures Section
+
+### Remove Two Rivers Logo
+
+* In the Century Cinemax image, remove the visible Two Rivers logo completely.
+* Ensure the image looks natural and professionally edited.
+
+### Replace Gallery Images
+
+* Replace all existing gallery images with the new images I will provide.
+* Optimise images for fast loading without compromising quality.
+* Maintain a consistent aspect ratio.
+* Ensure responsiveness across desktop, tablet and mobile devices.
+* Crop images intelligently when necessary.
+
+### Improve Gallery Design
+
+* Refine the gallery with a premium modern layout.
+* Add subtle hover animations.
+* Improve spacing, alignment and consistency.
+* Maintain accessibility and performance.
+
+## 5. Overall Design Improvements
+
+Using the attached poster as inspiration, refine the website to better reflect its vibrant, family-friendly branding while maintaining a premium feel.
+
+Focus on:
+
+* Matching the poster's colours and visual identity.
+* Consistent typography.
+* Better spacing and section hierarchy.
+* Modern cards with subtle shadows.
+* Smooth animations and transitions.
+* Attractive iconography.
+* Improved responsiveness.
+* A polished, professional user experience.
+
+The website should feel visually consistent with the promotional poster while remaining clean, modern, and easy to navigate.
+
+## 6. Verification
+
+Before marking the task complete, verify that:
+
+* The age range is updated everywhere to **4–12 years**.
+* The programme dates display **July 6th–10th, 2026** where applicable.
+* The registration fee is **KES 21,500**.
+* The registration confirmation message contains the updated items 3 and 4.
+* The Goal4Initiative partnership section has been added or updated.
+* The donation information and payment details are correct.
+* Contact details match the poster.
+* The Two Rivers logo has been removed from the Century Cinemax image.
+* All replacement gallery images have been uploaded successfully.
+* The Adventure in Pictures section is fully responsive.
+* The website maintains a premium, polished appearance across all devices.
+
+This prompt tells Replit to use your uploaded poster as the source of truth while preserving the premium website design you've been building.
