@@ -245,27 +245,57 @@ export default function RegistrationDetail() {
               </CardHeader>
               <CardContent className="pt-4">
                 {registration.paymentProofUrl ? (
-                  <div className="space-y-3">
-                    <div className="aspect-auto rounded-md overflow-hidden border">
-                      <img 
-                        src={registration.paymentProofUrl} 
-                        alt="M-Pesa Payment Proof" 
+                  <div className="space-y-4">
+                    <div className="rounded-md overflow-hidden border bg-muted/30">
+                      <img
+                        src={registration.paymentProofUrl}
+                        alt="M-Pesa Payment Screenshot"
                         className="w-full object-contain max-h-[400px]"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
                       />
                     </div>
-                    <a 
-                      href={registration.paymentProofUrl} 
-                      target="_blank" 
+                    <a
+                      href={registration.paymentProofUrl}
+                      target="_blank"
                       rel="noreferrer"
                       className="text-sm text-primary hover:underline flex items-center gap-1 justify-center"
                     >
-                      <FileText className="h-4 w-4" /> View Full Image
+                      <FileText className="h-4 w-4" /> Open Full Image
                     </a>
+                    {registration.paymentStatus === "pending" && (
+                      <Button
+                        className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-bold gap-2 text-base"
+                        onClick={() => handleStatusChange("confirmed")}
+                        disabled={updateStatusMutation.isPending}
+                      >
+                        <CheckCircle2 className="h-5 w-5" />
+                        {updateStatusMutation.isPending ? "Confirming…" : "Confirm Payment"}
+                      </Button>
+                    )}
+                    {registration.paymentStatus === "confirmed" && (
+                      <div className="flex items-center gap-2 text-green-700 bg-green-50 border border-green-200 rounded-md px-3 py-2 text-sm font-medium">
+                        <CheckCircle2 className="h-4 w-4" /> Payment confirmed
+                      </div>
+                    )}
                   </div>
                 ) : (
-                  <div className="text-center py-8 bg-muted/50 rounded-md border border-dashed">
-                    <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                    <p className="text-sm text-muted-foreground">No payment proof uploaded</p>
+                  <div className="space-y-4">
+                    <div className="text-center py-8 bg-muted/50 rounded-md border border-dashed">
+                      <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
+                      <p className="text-sm text-muted-foreground font-medium">No screenshot provided — verify manually.</p>
+                    </div>
+                    {registration.paymentStatus === "pending" && (
+                      <Button
+                        className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-bold gap-2"
+                        onClick={() => handleStatusChange("confirmed")}
+                        disabled={updateStatusMutation.isPending}
+                      >
+                        <CheckCircle2 className="h-5 w-5" />
+                        {updateStatusMutation.isPending ? "Confirming…" : "Confirm Payment Manually"}
+                      </Button>
+                    )}
                   </div>
                 )}
               </CardContent>

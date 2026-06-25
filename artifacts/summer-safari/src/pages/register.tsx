@@ -61,7 +61,9 @@ export default function Register() {
   const [step, setStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [createdRegistrationId, setCreatedRegistrationId] = useState<number | null>(null);
-  
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const createRegistration = useCreateRegistration();
   const uploadPaymentProof = useUploadPaymentProof();
 
@@ -134,36 +136,36 @@ export default function Register() {
   };
 
   const onSubmit = async (data: RegistrationFormValues) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitError(null);
     try {
       const { paymentProofBase64, ...registrationData } = data;
-      
+
       const res = await createRegistration.mutateAsync({
         data: registrationData
       });
-      
+
       setCreatedRegistrationId(res.id);
 
       if (paymentProofBase64) {
-        // extract mime type
         const match = paymentProofBase64.match(/^data:(image\/[a-z]+);base64,(.+)$/);
         if (match) {
           const mimeType = match[1];
           const base64Data = match[2];
-          
           await uploadPaymentProof.mutateAsync({
             id: res.id,
-            data: {
-              paymentProofBase64: base64Data,
-              mimeType
-            }
+            data: { paymentProofBase64: base64Data, mimeType }
           });
         }
       }
-      
+
       setIsSubmitted(true);
       window.scrollTo(0, 0);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
+      setSubmitError(msg ?? "Something went wrong. Please try again or WhatsApp 0720 764 275 for help.");
+      setIsSubmitting(false);
     }
   };
 
@@ -606,9 +608,30 @@ export default function Register() {
                       Next Step <ArrowRight className="h-4 w-4" />
                     </Button>
                   ) : (
-                    <Button type="submit" disabled={createRegistration.isPending || uploadPaymentProof.isPending} className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground min-w-[140px]">
-                      {createRegistration.isPending || uploadPaymentProof.isPending ? "Submitting..." : "Complete Registration"}
-                    </Button>
+                    <div className="flex flex-col items-end gap-2">
+                      {submitError && (
+                        <p className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-3 py-2 max-w-sm text-right">
+                          {submitError}
+                        </p>
+                      )}
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground min-w-[180px]"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                            </svg>
+                            Submitting...
+                          </>
+                        ) : (
+                          "Complete Registration"
+                        )}
+                      </Button>
+                    </div>
                   )}
                 </div>
               </form>

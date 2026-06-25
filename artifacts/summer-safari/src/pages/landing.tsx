@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   MapPin, Calendar, Clock, Bus, Apple, PhoneCall, MessageCircle,
   ChevronRight, Check, CheckCircle2, Users, Shield, Heart,
-  Star, ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils
+  ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils
 } from "lucide-react";
 import { useGetRegistrationCount } from "@workspace/api-client-react";
 
@@ -21,10 +21,8 @@ import pinsJungle from "@assets/kids_jungle_-_pins_1781863628483.webp";
 import pinsLogo from "@assets/Pins_logo_1781863628483.jpg";
 
 import stedmakLogo from "@assets/Stedmak_hotels_&_gardens_logo_1781863628483.jpg";
-import stedmakFood from "@assets/Stedmak_food_1781863628483.jpg";
 import stedmakLion from "@assets/Stedmak_zoo_1781863628484.jpg";
 import stedmakLovebird from "@assets/Stedmak_zoo_2_1781863628483.jpg";
-import stedmakCandy from "@assets/Stedmak_1781863628484.jpg";
 
 import ginahLogo from "@assets/Ginah's_bakery_1781863628482.png";
 import ginahCookies from "@assets/Ginah's_1781863628482.jpg";
@@ -351,7 +349,7 @@ export default function Landing() {
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 bg-gradient-to-r from-secondary to-secondary/90 rounded-3xl p-8 text-white text-center">
             {[
               { n: "5", l: "Exciting Days" },
-              { n: "5", l: "Unique Venues" },
+              { n: "Ages 5–14", l: "Welcome" },
               { n: "30", l: "Limited Slots" },
               { n: "100%", l: "Supervised" },
             ].map(({ n, l }) => (
@@ -404,7 +402,7 @@ export default function Landing() {
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
-                    <div className="grid grid-cols-2 grid-rows-2 h-full gap-1 rounded-lg overflow-hidden min-h-[260px]">
+                    <div className="grid grid-cols-2 grid-rows-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
                       <img src={enankaGallery} alt="Gallery Setup" className="w-full h-full object-cover col-span-2 row-span-1 group-hover:scale-105 transition-transform duration-700" />
                       <img src={enankaClay} alt="Clay Pottery" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                       <img src={enankaArt} alt="Art Studio" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -460,11 +458,9 @@ export default function Landing() {
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
-                    <div className="grid grid-cols-2 grid-rows-2 gap-1 rounded-lg overflow-hidden min-h-[260px]">
-                      <img src={stedmakLion} alt="Lion" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakLovebird} alt="Lovebird" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakFood} alt="Food" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakCandy} alt="Garden" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden min-h-[260px]">
+                      <img src={stedmakLion} alt="Animal Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakLovebird} alt="Bird Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
                     </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
@@ -558,16 +554,14 @@ export default function Landing() {
 
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
             {[
-              { src: enankaGallery, alt: "Art Gallery" },
-              { src: stedmakLion, alt: "Animal Park" },
-              { src: pinsJungle, alt: "Kids Jungle" },
+              { src: pinsJungle, alt: "Kids at the Jungle" },
               { src: ginahCookies, alt: "Baking Day" },
               { src: enankaClay, alt: "Clay Pottery" },
-              { src: stedmakFood, alt: "Restaurant" },
               { src: enankaArt, alt: "Art Studio" },
+              { src: enankaGallery, alt: "Art Gallery" },
+              { src: stedmakLion, alt: "Animal Park" },
               { src: stedmakLovebird, alt: "Bird Park" },
               { src: cinemaxInterior, alt: "Movie Night" },
-              { src: stedmakCandy, alt: "Gardens" },
             ].map(({ src, alt }, i) => (
               <motion.div
                 key={i}
@@ -688,39 +682,22 @@ export default function Landing() {
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-3 gap-6">
             {[
               {
-                quote: "My daughter came home every day bursting with excitement. The art gallery and bakery were her absolute favourites. Best school holiday decision we've made!",
-                name: "Wanjiku M.",
-                role: "Parent of a 7-year-old",
+                quote: "We'd love to hear from you after the safari! Testimonials from our first families coming soon.",
               },
               {
-                quote: "The team is incredibly professional and caring. I felt completely at ease knowing my son was supervised the whole day. The variety of activities was outstanding.",
-                name: "David K.",
-                role: "Parent of twin 9-year-olds",
+                quote: "Be part of Summer Safari 2026 and share your child's experience with other families.",
               },
               {
-                quote: "Worth every shilling! The children not only had fun but learned so much. My son still talks about the animal park and the movie day. Can't wait for the next one!",
-                name: "Amina H.",
-                role: "Parent of a 10-year-old",
+                quote: "Our first cohort of families will be sharing their stories in July 2026.",
               },
-            ].map(({ quote, name, role }, i) => (
+            ].map(({ quote }, i) => (
               <motion.div key={i} variants={item}>
                 <Card className="h-full border-0 shadow-md hover:shadow-lg transition-shadow bg-white p-6">
-                  <CardContent className="p-0 flex flex-col h-full gap-4">
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, s) => (
-                        <Star key={s} className="h-4 w-4 fill-primary text-primary" />
-                      ))}
+                  <CardContent className="p-0 flex flex-col h-full gap-4 justify-center">
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Heart className="h-5 w-5 text-primary" />
                     </div>
-                    <p className="text-foreground/80 italic flex-1 text-sm leading-relaxed">"{quote}"</p>
-                    <div className="flex items-center gap-3 pt-2 border-t border-border/50">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/40 to-secondary/40 flex items-center justify-center text-white font-bold text-sm">
-                        {name[0]}
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm">{name}</p>
-                        <p className="text-xs text-muted-foreground">{role}</p>
-                      </div>
-                    </div>
+                    <p className="text-foreground/70 text-sm leading-relaxed">{quote}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -819,11 +796,8 @@ export default function Landing() {
           <MapPin className="h-5 w-5 text-primary" />
           <span className="text-lg font-serif font-bold">Young Tots Edventures</span>
         </div>
-        <p className="opacity-50 text-xs mb-1">youngtots.replit.app</p>
+        <p className="opacity-50 text-xs mb-1">youngtotsadventures.replit.app</p>
         <p className="opacity-50">&copy; 2026 Young Tots Edventures. All Rights Reserved.</p>
-        <Link href="/admin" className="inline-block mt-6 opacity-30 hover:opacity-70 transition-opacity text-xs">
-          Admin Login
-        </Link>
       </footer>
     </div>
   );

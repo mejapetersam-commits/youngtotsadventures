@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, registrationsTable } from "@workspace/db";
-import { eq, count } from "drizzle-orm";
+import { eq, count, and, gt } from "drizzle-orm";
 import {
   CreateRegistrationBody,
   UploadPaymentProofBody,
@@ -14,14 +14,20 @@ const router = Router();
 
 const SAFARI_CAPACITY = 30;
 
-// GET /registrations/count - public spot counter
+// GET /registrations/count - public spot counter (only confirmed reduce spots)
 router.get("/registrations/count", async (req, res) => {
-  const [row] = await db.select({ value: count() }).from(registrationsTable);
-  const total = Number(row?.value ?? 0);
+  const [totalRow] = await db.select({ value: count() }).from(registrationsTable);
+  const [confirmedRow] = await db
+    .select({ value: count() })
+    .from(registrationsTable)
+    .where(eq(registrationsTable.paymentStatus, "confirmed"));
+  const total = Number(totalRow?.value ?? 0);
+  const confirmed = Number(confirmedRow?.value ?? 0);
   return res.json({
     total,
+    confirmed,
     capacity: SAFARI_CAPACITY,
-    spotsLeft: Math.max(0, SAFARI_CAPACITY - total),
+    spotsLeft: Math.max(0, SAFARI_CAPACITY - confirmed),
   });
 });
 
@@ -33,6 +39,26 @@ router.post("/registrations", async (req, res) => {
   }
 
   const data = parsed.data;
+
+  // Duplicate detection: same child name + parent phone within 10 minutes
+  const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+  const [duplicate] = await db
+    .select()
+    .from(registrationsTable)
+    .where(
+      and(
+        eq(registrationsTable.childName, data.childName),
+        eq(registrationsTable.parentPhone, data.parentPhone),
+        gt(registrationsTable.createdAt, tenMinutesAgo)
+      )
+    )
+    .limit(1);
+
+  if (duplicate) {
+    return res.status(409).json({
+      error: "You have already submitted a registration for this child. If you need help please WhatsApp 0720 764 275."
+    });
+  }
 
   const [registration] = await db
     .insert(registrationsTable)

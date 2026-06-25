@@ -1,0 +1,56 @@
+You are working on the Young Tots Edventures website. Make the following specific changes in this exact order of priority. Do not change anything else. Do not redesign any section. Confirm each change is complete before moving to the next.
+
+PRIORITY 1 — Fix payment screenshot storage and display (most urgent)
+Currently payment screenshots are saving to artifacts/api-server/uploads/ on the server disk but are completely inaccessible and unviewable anywhere. Fix this completely:
+Storage fix: Move screenshot storage from the local server disk to Replit's built-in object storage or serve them as static files from a publicly accessible path. Every uploaded screenshot must be accessible via a direct working URL after upload.
+Registration form fix: After a parent uploads their screenshot, save the accessible URL to the database, not just the file path. The stored value must be a working URL that loads the image directly in a browser.
+Admin dashboard fix: In the registration detail view, display the payment screenshot as a visible inline image using the stored URL. Show the screenshot image, the M-Pesa reference number, and a clearly visible "Confirm Payment" button that changes the registration status from 'pending' to 'confirmed' in one click. If no screenshot was uploaded show "No screenshot provided — verify manually."
+Test this end to end before proceeding: upload a test screenshot through the registration form, open the admin dashboard, click the registration row, and confirm the screenshot loads as a visible image. Only mark this as complete when the screenshot is visibly displayed in the admin detail view.
+
+PRIORITY 2 — Fix duplicate form submissions
+The registration form is currently allowing multiple submissions from the same parent. After the submit button is clicked once: immediately disable the button, change the button text to "Submitting...", show a loading spinner, and prevent any further clicks until the server responds. If submission succeeds, redirect to the confirmation page. If it fails, re-enable the button and show a clear error message explaining what went wrong.
+
+PRIORITY 3 — Remove Admin Login from public footer
+The footer currently shows a visible "Admin Login" link accessible to all visitors. Remove it completely from the footer. The admin panel should only be accessible by typing /admin directly in the browser URL. Do not place any link to it anywhere on the public-facing site.
+
+PRIORITY 4 — Replace fabricated testimonials
+The three testimonials from "Wanjiku M.", "David K.", and "Amina H." are completely fabricated people with invented quotes. This destroys trust if parents notice. Replace all three cards with honest placeholder content:
+Card 1: "We'd love to hear from you after the safari! Testimonials from our first families coming soon."
+Card 2: "Be part of Summer Safari 2026 and share your child's experience with other families."
+Card 3: "Our first cohort of families will be sharing their stories in July 2026."
+Remove star ratings from all three placeholder cards. Remove all fake parent names and child ages. Keep the card design identical but remove every piece of fabricated content.
+
+PRIORITY 5 — Fix the spot counter
+The spot counter is showing inaccurate and inconsistent numbers that change randomly. Fix it to reflect real data: Available spots = 30 minus the number of registrations where status = 'confirmed'. Pending registrations must not reduce the available count. Only confirmed payments reduce the spot count. Hardcode the total capacity as 30. The counter must show the same number consistently on every page load until a payment is confirmed by admin.
+
+PRIORITY 6 — Fix duplicate registrations in admin
+Michael Ngolleni appears three times in the admin dashboard from the same parent submitting multiple times. Add a duplicate detection check: if a registration is submitted with the same child name and parent phone number within 10 minutes of a previous submission, reject the duplicate and show the parent a message saying "You have already submitted a registration for this child. If you need help please WhatsApp 0720 764 275."
+
+PRIORITY 7 — Fix Stedmak Gardens image grid
+The Day 3 Stedmak Gardens section is incorrectly showing food photos that belong to other days. Replace all images in the Stedmak Gardens card with photos showing animals, outdoor spaces, or gardens only. No food photos should appear in this section.
+
+PRIORITY 8 — Fix empty white space in Day 1 Enanka card
+The right side of the Day 1 Enanka Art Gallery card appears empty or broken on desktop view. Ensure the venue name, location badge, and all four activity highlights are fully visible and correctly aligned on both desktop and mobile.
+
+PRIORITY 9 — Update footer domain
+The footer currently displays youngtots.replit.app which is incorrect. Update it to display youngtotsadventures.replit.app to match the actual live URL.
+
+PRIORITY 10 — Fix repetitive stats bar
+The stats section currently shows "5 Exciting Days" and "5 Unique Venues" side by side which looks repetitive and weak. Replace "5 Unique Venues" with "Ages 5–14 Welcome". Keep the exact same card design, sizing, and gold color.
+
+PRIORITY 11 — Fix photo gallery to show children
+The photo gallery currently shows mostly empty venue spaces, food, and animals with almost no children visible. This is the biggest missed emotional trigger on the site — parents want to see children having fun, not interior design. Prioritise photos that show children actively participating in activities. Move any photos showing children to the front of the gallery. The gallery must lead with people, not places.
+
+FINAL CHECK — before marking anything as complete:
+Run through this checklist:
+☐ Upload a test screenshot through the registration form and confirm it appears as a visible image in the admin detail view
+☐ Submit the registration form twice with the same details and confirm only one record is created
+☐ Confirm the Admin Login link is completely gone from the footer
+☐ Confirm no fake names appear in the testimonials section
+☐ Confirm the spot counter shows 30 minus confirmed registrations only
+☐ Confirm Stedmak Gardens shows no food photos
+☐ Confirm Day 1 Enanka card has no empty white space
+☐ Confirm footer shows correct URL
+☐ Confirm stats bar shows "Ages 5–14 Welcome" not "5 Unique Venues"
+☐ Confirm gallery leads with photos of children
+Report back on each checklist item with a pass or fail before considering this complete.
