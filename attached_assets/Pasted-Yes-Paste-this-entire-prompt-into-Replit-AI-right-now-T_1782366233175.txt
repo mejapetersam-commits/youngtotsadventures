@@ -1,0 +1,37 @@
+Yes. Paste this entire prompt into Replit AI right now:
+
+---
+
+> The registration form is critically broken and showing "Something went wrong. Please try again or WhatsApp 0720 764 275 for help." on every submission. This has been broken for over an hour. No parents can register. This is a live site with real users.
+>
+> Follow these steps exactly in this order:
+>
+> **Step 1 — Diagnose before touching anything**
+>
+> Show me the exact server error log from the last failed form submission. Copy the full error message including the stack trace and which file and line number it originated from. Do not skip this step.
+>
+> **Step 2 — Test database independently**
+>
+> Without touching the form, run a direct test write to the registrations table and confirm whether the database is accepting writes right now. Show me the result.
+>
+> **Step 3 — Test without screenshot**
+>
+> Submit a test registration with no screenshot attached. Tell me whether it succeeds or fails. This tells us if the screenshot upload code is the source of the breakage.
+>
+> **Step 4 — Fix only what is broken**
+>
+> Based on what the diagnostic shows, fix only the broken component. Do not rewrite the entire form. Do not change the database schema. Do not change the frontend design. Fix only the specific line or function that is failing.
+>
+> **Step 5 — Confirm fix with end to end test**
+>
+> After the fix, submit a complete test registration including a screenshot upload. Confirm the record appears in the admin dashboard at /admin. Show me the confirmation.
+>
+> **Step 6 — Consent form update**
+>
+> Once the form is confirmed working, make this one small change: In the consent section, replace the current photo consent statement with exactly this text: "The photos will be shared with the parents only and will not be used for promotional purposes."
+>
+> **Do not make any other changes. Do not touch anything that is currently working. Fix the form first and confirm it works before doing anything else.**
+
+---
+
+Send me whatever the Replit AI responds with. Specifically the error log from Step 1. That will tell us exactly what broke.
