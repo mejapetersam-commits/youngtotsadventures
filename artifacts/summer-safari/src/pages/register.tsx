@@ -149,14 +149,16 @@ export default function Register() {
       setCreatedRegistrationId(res.id);
 
       if (paymentProofBase64) {
-        const match = paymentProofBase64.match(/^data:(image\/[a-z]+);base64,(.+)$/);
-        if (match) {
-          const mimeType = match[1];
-          const base64Data = match[2];
-          await uploadPaymentProof.mutateAsync({
-            id: res.id,
-            data: { paymentProofBase64: base64Data, mimeType }
-          });
+        try {
+          const match = paymentProofBase64.match(/^data:(image\/[a-z]+);base64,(.+)$/);
+          if (match) {
+            await uploadPaymentProof.mutateAsync({
+              id: res.id,
+              data: { paymentProofBase64: match[2], mimeType: match[1] }
+            });
+          }
+        } catch (_uploadErr) {
+          // Screenshot upload failed — registration is saved; admin can request proof via WhatsApp
         }
       }
 
@@ -525,7 +527,7 @@ export default function Register() {
                       <p className="mb-2 font-bold text-foreground">Parental Consent & Liability Waiver</p>
                       <p className="mb-2">I give permission for my child to attend the Young Tots Edventures Summer Safari 2026 and participate in all activities. I understand that the organizers will take all necessary precautions to ensure the safety of the children, but will not be held liable for any accidents, injuries, or loss of property that may occur during the program.</p>
                       <p className="mb-2">I authorize the organizers to seek emergency medical treatment for my child if necessary, and agree to cover any resulting medical expenses.</p>
-                      <p>I consent to my child being photographed or video recorded during the program for promotional purposes.</p>
+                      <p>The photos will be shared with the parents only and will not be used for promotional purposes.</p>
                     </div>
 
                     <FormField

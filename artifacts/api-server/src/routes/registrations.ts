@@ -6,8 +6,6 @@ import {
   UploadPaymentProofBody,
   UploadPaymentProofParams,
 } from "@workspace/api-zod";
-import path from "path";
-import fs from "fs";
 import { notifyNewRegistration } from "../lib/whatsapp";
 
 const router = Router();
@@ -125,19 +123,8 @@ router.post("/registrations/:id/payment-proof", async (req, res) => {
     return res.status(404).json({ error: "Registration not found" });
   }
 
-  // Save the base64 image to disk
-  const uploadsDir = path.join(process.cwd(), "uploads");
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-  }
-
-  const ext = mimeType === "image/png" ? "png" : mimeType === "image/jpeg" ? "jpg" : "jpg";
-  const filename = `payment-proof-${id}-${Date.now()}.${ext}`;
-  const filepath = path.join(uploadsDir, filename);
-  const buffer = Buffer.from(paymentProofBase64, "base64");
-  fs.writeFileSync(filepath, buffer);
-
-  const paymentProofUrl = `/api/uploads/${filename}`;
+  // Store the image as an inline data URL — no filesystem dependencies, works in all environments
+  const paymentProofUrl = `data:${mimeType};base64,${paymentProofBase64}`;
 
   const [updated] = await db
     .update(registrationsTable)
