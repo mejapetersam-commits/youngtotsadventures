@@ -1,0 +1,59 @@
+Good — form is working. Now the images.
+
+I can see all four photos clearly. They're excellent — real children and people actively doing pottery and clay modelling at Enanka. Exactly what the client wants. These will work perfectly.
+
+---
+
+**One honest flag before the prompt:**
+
+These photos need to be uploaded into your Replit project assets first. The AI cannot use images from this chat — it can only use files that exist in the project file system.
+
+**Do this first:**
+1. Save all 4 images to your computer
+2. Upload them into your Replit project under `/public/images/` or wherever your other assets are stored
+3. Note the exact filenames after upload
+4. Then run this prompt
+
+---
+
+**Here's the prompt:**
+
+---
+
+> Make these two specific changes to the Adventure in Pictures section only. Do not change any other section.
+>
+> **CHANGE 1 — Convert gallery to autoplay slideshow**
+>
+> Replace the current grid/masonry layout in the Adventure in Pictures section with a full-width autoplay slideshow. Requirements:
+>
+> - Auto-advances every 4 seconds
+> - Smooth fade or slide transition between photos
+> - Left and right manual navigation arrows visible on desktop
+> - Swipeable left and right on mobile
+> - Dot indicators at the bottom showing current position
+> - Clicking any photo opens it in a lightbox for full view
+> - Remove all day labels and category filters entirely — no "Day 1", "Day 2" text overlays or filter buttons
+> - The slideshow should feel like a warm, engaging photo album of real children having fun
+>
+> **CHANGE 2 — Replace the two painting images with new pottery/modelling photos**
+>
+> There are currently two painting images in the gallery that are incorrect — Enanka is a pottery and clay modelling day, not a painting day. Remove both painting images completely.
+>
+> Four new images have been uploaded to the project assets:
+> - Enanka_1.1
+> - Enanka_1.2
+> - Enanka_2.webp
+> - Enanka_3.webp
+>
+> Add all four of these new images into the slideshow. These show real children and participants doing pottery and clay work at Enanka Art Gallery. Place them early in the slideshow so they appear within the first few slides.
+>
+> **Do not change anything else. Do not touch the hero slideshow, the day cards, the registration form, or any other section. Only change the Adventure in Pictures section as described above.**
+>
+> **Confirm when done:**
+> ☐ Gallery is now a slideshow not a grid
+> ☐ Slideshow autoplays every 4 seconds
+> ☐ Navigation arrows and dot indicators visible
+> ☐ Swipeable on mobile
+> ☐ All day labels and filters removed
+> ☐ Two painting images removed
+> ☐ Four new Enanka pottery images added and visible in slideshow

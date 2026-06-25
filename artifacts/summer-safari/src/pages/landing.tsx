@@ -1,12 +1,12 @@
 import { Link } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   MapPin, Calendar, Clock, Bus, Apple, PhoneCall, MessageCircle,
-  ChevronRight, Check, CheckCircle2, Users, Shield, Heart,
+  ChevronRight, ChevronLeft, Check, CheckCircle2, Users, Shield, Heart,
   ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils,
   Mail, Compass, BookOpen, Leaf, PartyPopper, X
 } from "lucide-react";
@@ -32,8 +32,10 @@ import cinemaxLogo from "@assets/Cinemax_logo_1781863560866.png";
 import cinemaxInterior from "@assets/Century_cinemax_1781863628481.jpg";
 
 // New photos (Adventure in Pictures gallery only)
-import enankaPaintings from "@assets/Enanka_1_1782420466047.jpg";
-import enankaPainting from "@assets/Enanka_7_1782420523829.jpg";
+import enankaPottery1 from "@assets/Enanka_1_1782426213361_1.webp";
+import enankaPottery2 from "@assets/Enanka_1_1782426334405_2.jpg";
+import enankaPottery3 from "@assets/Enanka_2_1782426389207.webp";
+import enankaPottery4 from "@assets/Enanka_3_1782426356478.webp";
 import pinsBowling from "@assets/Pins_1_1782420615995.jpg";
 import pinsSlides from "@assets/Pins_2_1782420640979.jpg";
 import pinsPlayground from "@assets/Pins_5_1782420667125.jpeg";
@@ -55,41 +57,26 @@ const HERO_SLIDES = [
   { src: cinemaxInterior, alt: "Movie Day – Day 5", caption: "Day 5 · Movie Celebration" },
 ];
 
-type GalleryPhoto = { day: number; src: string; alt: string };
+type GalleryPhoto = { src: string; alt: string };
 
 const GALLERY: GalleryPhoto[] = [
-  { day: 1, src: enankaPaintings, alt: "Art exhibition at Enanka Art Gallery" },
-  { day: 1, src: enankaPainting, alt: "Colourful paintings at Enanka Art Gallery" },
-  { day: 2, src: pinsPlayground, alt: "Indoor playground at The Jungle, Pins" },
-  { day: 2, src: pinsSlides, alt: "Play slides at The Jungle" },
-  { day: 2, src: pinsBowling, alt: "Bowling lanes at Pins Entertainment" },
-  { day: 3, src: stedmakAerial, alt: "Adventure park at Stedmak Gardens" },
-  { day: 3, src: stedmakPlayground, alt: "Outdoor playground at Stedmak Gardens" },
-  { day: 3, src: stedmakNight, alt: "Gardens at Stedmak" },
-  { day: 4, src: ginahSafariCake, alt: "Safari celebration cake at Ginah's Bakery" },
-  { day: 4, src: ginahCupcakes, alt: "Decorated cupcakes at Ginah's Bakery" },
-  { day: 4, src: ginahCake, alt: "Decorated cake at Ginah's Bakery" },
-  { day: 5, src: centuryImax, alt: "IMAX cinema at Century, Junction Mall" },
-  { day: 5, src: centuryOrange, alt: "Cinema hall at Century" },
-  { day: 5, src: centuryConcession, alt: "Cinema concession at Century" },
+  { src: enankaPottery1, alt: "Children shaping clay at Enanka Art Gallery" },
+  { src: enankaPottery2, alt: "Handmade clay creations at Enanka Art Gallery" },
+  { src: enankaPottery3, alt: "Working the pottery wheel at Enanka Art Gallery" },
+  { src: enankaPottery4, alt: "Hands-on clay modelling at Enanka Art Gallery" },
+  { src: pinsPlayground, alt: "Indoor playground at The Jungle, Pins" },
+  { src: pinsSlides, alt: "Play slides at The Jungle" },
+  { src: pinsBowling, alt: "Bowling lanes at Pins Entertainment" },
+  { src: stedmakAerial, alt: "Adventure park at Stedmak Gardens" },
+  { src: stedmakPlayground, alt: "Outdoor playground at Stedmak Gardens" },
+  { src: stedmakNight, alt: "Gardens at Stedmak" },
+  { src: ginahSafariCake, alt: "Safari celebration cake at Ginah's Bakery" },
+  { src: ginahCupcakes, alt: "Decorated cupcakes at Ginah's Bakery" },
+  { src: ginahCake, alt: "Decorated cake at Ginah's Bakery" },
+  { src: centuryImax, alt: "IMAX cinema at Century, Junction Mall" },
+  { src: centuryOrange, alt: "Cinema hall at Century" },
+  { src: centuryConcession, alt: "Cinema concession at Century" },
 ];
-
-const DAY_FILTERS = [
-  { id: 0, label: "All Days", emoji: "✨" },
-  { id: 1, label: "Day 1 · Enanka Art", emoji: "🎨" },
-  { id: 2, label: "Day 2 · The Jungle", emoji: "🎮" },
-  { id: 3, label: "Day 3 · Stedmak Gardens", emoji: "🦁" },
-  { id: 4, label: "Day 4 · Ginah's Bakery", emoji: "🍪" },
-  { id: 5, label: "Day 5 · Movie Day", emoji: "🎬" },
-];
-
-const DAY_HEADINGS: Record<number, string> = {
-  1: "🎨 Day 1 — Enanka Art Gallery",
-  2: "🎮 Day 2 — Adventure at The Jungle",
-  3: "🦁 Day 3 — Exploring Stedmak Gardens",
-  4: "🍪 Day 4 — Baking at Ginah's Bakery",
-  5: "🎬 Day 5 — Movie Day Grand Finale",
-};
 
 const SAFARI_START = new Date("2026-07-06T08:15:00+03:00");
 
@@ -187,8 +174,11 @@ export default function Landing() {
     return () => clearInterval(id);
   }, []);
 
-  const [activeDay, setActiveDay] = useState(0);
+  const [slide, setSlide] = useState(0);
   const [lightbox, setLightbox] = useState<GalleryPhoto | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const nextSlide = () => setSlide((s) => (s + 1) % GALLERY.length);
+  const prevSlide = () => setSlide((s) => (s - 1 + GALLERY.length) % GALLERY.length);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightbox(null); };
     window.addEventListener("keydown", onKey);
@@ -198,6 +188,11 @@ export default function Landing() {
     document.body.style.overflow = lightbox ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [lightbox]);
+  useEffect(() => {
+    if (lightbox) return;
+    const id = setInterval(() => setSlide((s) => (s + 1) % GALLERY.length), 4000);
+    return () => clearInterval(id);
+  }, [slide, lightbox]);
 
   const item: Variants = {
     hidden: { opacity: 0, y: 24 },
@@ -635,57 +630,70 @@ export default function Landing() {
             </motion.p>
           </motion.div>
 
-          {/* Day filter bar (horizontally scrollable on mobile) */}
-          <div className="flex gap-2 overflow-x-auto pb-3 mb-10 -mx-4 px-4 sm:flex-wrap sm:justify-center sm:mx-0 sm:px-0 scrollbar-hide">
-            {DAY_FILTERS.map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setActiveDay(f.id)}
-                aria-pressed={activeDay === f.id}
-                className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all border ${
-                  activeDay === f.id
-                    ? "bg-primary text-white border-primary shadow-md"
-                    : "bg-white text-foreground/70 border-border hover:border-primary/50 hover:text-primary"
-                }`}
-              >
-                <span aria-hidden="true">{f.emoji}</span>{f.label}
-              </button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeDay}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
+          {/* Autoplay slideshow */}
+          <div className="relative max-w-4xl mx-auto">
+            <div
+              className="relative overflow-hidden rounded-2xl shadow-xl aspect-[16/10] bg-muted"
+              onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+              onTouchEnd={(e) => {
+                if (touchStartX.current === null) return;
+                const dx = e.changedTouches[0].clientX - touchStartX.current;
+                if (dx > 50) prevSlide();
+                else if (dx < -50) nextSlide();
+                touchStartX.current = null;
+              }}
             >
-              {(activeDay === 0 ? [1, 2, 3, 4, 5] : [activeDay]).map((day) => (
-                <div key={day} className="mb-14 last:mb-0">
-                  <h3 className="text-xl md:text-2xl font-serif font-bold text-foreground mb-6 text-center sm:text-left">
-                    {DAY_HEADINGS[day]}
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                    {GALLERY.filter((g) => g.day === day).map((g, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setLightbox(g)}
-                        aria-label={`View photo: ${g.alt}`}
-                        className="overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer aspect-[4/3]"
-                      >
-                        <img
-                          src={g.src}
-                          alt={g.alt}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              <AnimatePresence mode="wait">
+                <motion.button
+                  key={slide}
+                  type="button"
+                  onClick={() => setLightbox(GALLERY[slide])}
+                  aria-label={`View photo: ${GALLERY[slide].alt}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="absolute inset-0 w-full h-full cursor-pointer"
+                >
+                  <img
+                    src={GALLERY[slide].src}
+                    alt={GALLERY[slide].alt}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.button>
+              </AnimatePresence>
+
+              <button
+                onClick={prevSlide}
+                aria-label="Previous photo"
+                className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-11 h-11 rounded-full bg-white/85 text-foreground shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={nextSlide}
+                aria-label="Next photo"
+                className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-11 h-11 rounded-full bg-white/85 text-foreground shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Dot indicators */}
+            <div className="flex justify-center gap-2 mt-5 flex-wrap">
+              {GALLERY.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSlide(i)}
+                  aria-label={`Go to photo ${i + 1}`}
+                  aria-current={slide === i}
+                  className={`h-2.5 rounded-full transition-all ${
+                    slide === i ? "w-7 bg-primary" : "w-2.5 bg-foreground/20 hover:bg-foreground/40"
+                  }`}
+                />
               ))}
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          </div>
         </div>
       </section>
 
