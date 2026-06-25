@@ -1,0 +1,77 @@
+Crystal clear now. The client wants three distinct image zones:
+
+---
+
+**Before you run anything — critical question:**
+
+Do the original slideshow images and original day card images still exist in the Replit project assets? Or did the AI overwrite/delete them during the last update?
+
+This matters because if they're gone, "restore the originals" is an impossible instruction and the AI will use whatever is currently available — which is the wrong images again.
+
+Go to your Replit file tree and check if there's a folder with the original images still present. Tell me what you see.
+
+---
+
+**Once you confirm the originals exist, run this prompt:**
+
+---
+
+> Make these three specific image zone changes to the Young Tots Edventures website. Do not change any layouts, designs, text, or functionality. Only change which images appear in which sections.
+>
+> **ZONE 1 — Hero Slideshow (top of homepage)**
+>
+> The rotating slideshow in the hero section must use only the original Young Tots photos that were there before any recent updates. These are the authentic child-focused images from previous Young Tots events showing real children participating in activities. Do not use venue photos, stock images, or food photos in the hero slideshow. Restore exactly the images that were in the slideshow before the last round of changes. If the originals are saved in the project assets, use those. The slideshow should feel warm, authentic, and child-centered.
+>
+> **ZONE 2 — 5-Day Schedule Cards (day by day section)**
+>
+> The five activity cards for each day must maintain the original images that were there before the last update. The client specifically approved these images and does not want them changed. Restore them exactly as they were. Do not replace them with stock photos, venue shots, or food images.
+>
+> Day 1 — Enanka Art Gallery: original approved image
+> Day 2 — The Jungle, Pins Entertainment: original approved image
+> Day 3 — Stedmak Gardens: original approved image
+> Day 4 — Ginah's Bakery: original approved image
+> Day 5 — Movie Day, Junction Mall: original approved image
+>
+> **ZONE 3 — Adventure in Pictures Gallery (new images, thematic and interactive)**
+>
+> This section only should use the new images. Completely rebuild this gallery to be thematic and interactive using the following rules:
+>
+> Organise photos into 5 thematic day groups with a clear visual day label above each group:
+>
+> 🎨 Day 1 — Pottery & Art at Enanka
+> Photos must show children doing pottery and clay work. Enanka is a pottery day not a painting day. No painting images here.
+>
+> 🎮 Day 2 — Adventure at The Jungle
+> Photos must show children on rides, climbing structures, playing interactive games, and teamwork activities.
+>
+> 🦁 Day 3 — Exploring Stedmak Gardens
+> Photos must show children with animals, on train rides, trampolines, and outdoor exploration.
+>
+> 🍪 Day 4 — Baking at Ginah's Bakery
+> Photos must show children baking, decorating, and making cookies together.
+>
+> 🎬 Day 5 — Movie Day Grand Finale
+> Photos must show children at the cinema or celebrating together as a group.
+>
+> Make the gallery interactive:
+> - Clicking a day label filters the gallery to show only that day's photos
+> - Add a smooth fade transition when switching between day filters
+> - Add an "All Days" filter button at the top to show everything at once
+> - Each photo should open in a lightbox when clicked
+> - On mobile, make the filter buttons horizontally scrollable
+>
+> Every single photo in this gallery must show children actively participating. No empty venue shots. No food-only photos. No stock images without children present.
+>
+> **Final check before marking complete:**
+>
+> ☐ Hero slideshow shows only original Young Tots photos
+> ☐ All 5 day cards show their original approved images
+> ☐ Adventure in Pictures has day filter buttons that work
+> ☐ Each day filter shows only that day's themed photos
+> ☐ All gallery photos show children actively participating
+> ☐ Lightbox works on both desktop and mobile
+> ☐ No section other than Adventure in Pictures was changed
+
+---
+
+Confirm the original images are still in the project first. That's the make or break question before running this.

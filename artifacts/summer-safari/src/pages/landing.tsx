@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,42 +8,88 @@ import {
   MapPin, Calendar, Clock, Bus, Apple, PhoneCall, MessageCircle,
   ChevronRight, Check, CheckCircle2, Users, Shield, Heart,
   ChevronDown, ChevronUp, Sparkles, Award, Camera, Utensils,
-  Mail, Compass, BookOpen, Leaf, PartyPopper
+  Mail, Compass, BookOpen, Leaf, PartyPopper, X
 } from "lucide-react";
 import { useGetRegistrationCount } from "@workspace/api-client-react";
 
-// Real Images
+// Original approved photos (Hero slideshow + Day cards)
 import enankaLogo from "@assets/Enanka_art_gallery_logo_1781863628482.png";
-import enankaPaintings from "@assets/Enanka_1_1782420466047.jpg";
-import enankaPainting from "@assets/Enanka_7_1782420523829.jpg";
+import enankaGallery from "@assets/Enanka_art_gallery_1781863628482.webp";
+import enankaClay from "@assets/Enanka__1781863628482.jpg";
+import enankaArt from "@assets/Enanka_art_1781863628482.webp";
 
 import pinsLogo from "@assets/Pins_logo_1781863628483.jpg";
+import pinsJungle from "@assets/kids_jungle_-_pins_1781863628483.webp";
+
+import stedmakLogo from "@assets/Stedmak_hotels_&_gardens_logo_1781863628483.jpg";
+import stedmakLion from "@assets/Stedmak_zoo_1781863628484.jpg";
+import stedmakLovebird from "@assets/Stedmak_zoo_2_1781863628483.jpg";
+
+import ginahLogo from "@assets/Ginah's_bakery_1781863628482.png";
+import ginahCookies from "@assets/Ginah's_1781863628482.jpg";
+
+import cinemaxLogo from "@assets/Cinemax_logo_1781863560866.png";
+import cinemaxInterior from "@assets/Century_cinemax_1781863628481.jpg";
+
+// New photos (Adventure in Pictures gallery only)
+import enankaPaintings from "@assets/Enanka_1_1782420466047.jpg";
+import enankaPainting from "@assets/Enanka_7_1782420523829.jpg";
 import pinsBowling from "@assets/Pins_1_1782420615995.jpg";
 import pinsSlides from "@assets/Pins_2_1782420640979.jpg";
 import pinsPlayground from "@assets/Pins_5_1782420667125.jpeg";
-
-import stedmakLogo from "@assets/Stedmak_hotels_&_gardens_logo_1781863628483.jpg";
 import stedmakNight from "@assets/Stedmak_1_1782420736044.jpg";
 import stedmakAerial from "@assets/Stedmak_2_1782420750496.jpg";
 import stedmakPlayground from "@assets/Stedmak_4_1782420793986.jpg";
-
-import ginahLogo from "@assets/Ginah's_bakery_1781863628482.png";
 import ginahCake from "@assets/Gina_3_1782420545576.jpg";
 import ginahCupcakes from "@assets/Gina_4_1782420577959.jpg";
 import ginahSafariCake from "@assets/Gina_5_1782420597645.jpg";
-
-import cinemaxLogo from "@assets/Cinemax_logo_1781863560866.png";
 import centuryConcession from "@assets/Century_1_1782420390082.jpeg";
 import centuryOrange from "@assets/Century_3_1782420407142.jpg";
 import centuryImax from "@assets/Century_4_1782420416012.jpg";
 
 const HERO_SLIDES = [
-  { src: enankaPaintings, alt: "Art Gallery – Day 1", caption: "Day 1 · Enanka Art Gallery" },
-  { src: pinsPlayground, alt: "Kids Playground – Day 2", caption: "Day 2 · Pins Entertainment" },
-  { src: stedmakAerial, alt: "Adventure Park – Day 3", caption: "Day 3 · Stedmak Gardens" },
-  { src: ginahSafariCake, alt: "Baking – Day 4", caption: "Day 4 · Ginah's Bakery" },
-  { src: centuryImax, alt: "Movie Day – Day 5", caption: "Day 5 · Movie Celebration" },
+  { src: enankaGallery, alt: "Art Gallery – Day 1", caption: "Day 1 · Enanka Art Gallery" },
+  { src: pinsJungle, alt: "Kids Jungle – Day 2", caption: "Day 2 · Pins Entertainment" },
+  { src: stedmakLion, alt: "Animal Park – Day 3", caption: "Day 3 · Stedmak Gardens" },
+  { src: ginahCookies, alt: "Baking – Day 4", caption: "Day 4 · Ginah's Bakery" },
+  { src: cinemaxInterior, alt: "Movie Day – Day 5", caption: "Day 5 · Movie Celebration" },
 ];
+
+type GalleryPhoto = { day: number; src: string; alt: string };
+
+const GALLERY: GalleryPhoto[] = [
+  { day: 1, src: enankaPaintings, alt: "Art exhibition at Enanka Art Gallery" },
+  { day: 1, src: enankaPainting, alt: "Colourful paintings at Enanka Art Gallery" },
+  { day: 2, src: pinsPlayground, alt: "Indoor playground at The Jungle, Pins" },
+  { day: 2, src: pinsSlides, alt: "Play slides at The Jungle" },
+  { day: 2, src: pinsBowling, alt: "Bowling lanes at Pins Entertainment" },
+  { day: 3, src: stedmakAerial, alt: "Adventure park at Stedmak Gardens" },
+  { day: 3, src: stedmakPlayground, alt: "Outdoor playground at Stedmak Gardens" },
+  { day: 3, src: stedmakNight, alt: "Gardens at Stedmak" },
+  { day: 4, src: ginahSafariCake, alt: "Safari celebration cake at Ginah's Bakery" },
+  { day: 4, src: ginahCupcakes, alt: "Decorated cupcakes at Ginah's Bakery" },
+  { day: 4, src: ginahCake, alt: "Decorated cake at Ginah's Bakery" },
+  { day: 5, src: centuryImax, alt: "IMAX cinema at Century, Junction Mall" },
+  { day: 5, src: centuryOrange, alt: "Cinema hall at Century" },
+  { day: 5, src: centuryConcession, alt: "Cinema concession at Century" },
+];
+
+const DAY_FILTERS = [
+  { id: 0, label: "All Days", emoji: "✨" },
+  { id: 1, label: "Day 1 · Enanka Art", emoji: "🎨" },
+  { id: 2, label: "Day 2 · The Jungle", emoji: "🎮" },
+  { id: 3, label: "Day 3 · Stedmak Gardens", emoji: "🦁" },
+  { id: 4, label: "Day 4 · Ginah's Bakery", emoji: "🍪" },
+  { id: 5, label: "Day 5 · Movie Day", emoji: "🎬" },
+];
+
+const DAY_HEADINGS: Record<number, string> = {
+  1: "🎨 Day 1 — Enanka Art Gallery",
+  2: "🎮 Day 2 — Adventure at The Jungle",
+  3: "🦁 Day 3 — Exploring Stedmak Gardens",
+  4: "🍪 Day 4 — Baking at Ginah's Bakery",
+  5: "🎬 Day 5 — Movie Day Grand Finale",
+};
 
 const SAFARI_START = new Date("2026-07-06T08:15:00+03:00");
 
@@ -140,6 +186,18 @@ export default function Landing() {
     const id = setInterval(() => setSlideIdx(i => (i + 1) % HERO_SLIDES.length), 4500);
     return () => clearInterval(id);
   }, []);
+
+  const [activeDay, setActiveDay] = useState(0);
+  const [lightbox, setLightbox] = useState<GalleryPhoto | null>(null);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightbox(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [lightbox]);
 
   const item: Variants = {
     hidden: { opacity: 0, y: 24 },
@@ -428,8 +486,9 @@ export default function Landing() {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
                     <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={enankaPaintings} alt="Art exhibition" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={enankaPainting} alt="Child painting" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={enankaGallery} alt="Gallery Setup" className="w-full h-full object-cover col-span-2 row-span-1 group-hover:scale-105 transition-transform duration-700" />
+                      <img src={enankaClay} alt="Clay Pottery" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={enankaArt} alt="Art Studio" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
@@ -455,12 +514,8 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row-reverse">
-                  <div className="w-full md:w-2/5 p-1 bg-green-50 overflow-hidden">
-                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={pinsPlayground} alt="Indoor playground" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={pinsSlides} alt="Play slides" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={pinsBowling} alt="Bowling" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    </div>
+                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-green-50">
+                    <img src={pinsJungle} alt="Jungle Playground" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -487,9 +542,8 @@ export default function Landing() {
                 <div className="flex flex-col md:flex-row">
                   <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
                     <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden min-h-[260px]">
-                      <img src={stedmakAerial} alt="Adventure park" className="w-full h-full object-cover min-h-[260px] col-span-2 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakPlayground} alt="Playground" className="w-full h-full object-cover min-h-[200px] group-hover:scale-105 transition-transform duration-700" />
-                      <img src={stedmakNight} alt="Gardens" className="w-full h-full object-cover min-h-[200px] group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakLion} alt="Animal Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
+                      <img src={stedmakLovebird} alt="Bird Park" className="w-full h-full object-cover min-h-[260px] group-hover:scale-105 transition-transform duration-700" />
                     </div>
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
@@ -515,12 +569,8 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row-reverse">
-                  <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
-                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={ginahSafariCake} alt="Safari cake" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={ginahCupcakes} alt="Safari cupcakes" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={ginahCake} alt="Decorated cake" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    </div>
+                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-amber-50">
+                    <img src={ginahCookies} alt="Baking cookies" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -545,12 +595,8 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
-                  <div className="w-full md:w-2/5 p-1 bg-slate-900 overflow-hidden">
-                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={centuryImax} alt="IMAX cinema" className="w-full h-full object-cover col-span-2 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={centuryOrange} alt="Cinema hall" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={centuryConcession} alt="Concession stand" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    </div>
+                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-slate-900">
+                    <img src={cinemaxInterior} alt="Cinema Interior" className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
@@ -589,36 +635,57 @@ export default function Landing() {
             </motion.p>
           </motion.div>
 
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
-            {[
-              { src: enankaPaintings, alt: "Art exhibition" },
-              { src: pinsPlayground, alt: "Indoor playground" },
-              { src: ginahSafariCake, alt: "Safari celebration cake" },
-              { src: stedmakAerial, alt: "Adventure park" },
-              { src: enankaPainting, alt: "Child painting" },
-              { src: pinsBowling, alt: "Bowling lanes" },
-              { src: ginahCupcakes, alt: "Safari cupcakes" },
-              { src: centuryImax, alt: "IMAX cinema" },
-              { src: stedmakPlayground, alt: "Outdoor playground" },
-              { src: pinsSlides, alt: "Play slides" },
-              { src: ginahCake, alt: "Decorated cake" },
-              { src: centuryOrange, alt: "Cinema hall" },
-              { src: stedmakNight, alt: "Gardens at night" },
-              { src: centuryConcession, alt: "Cinema concession" },
-            ].map(({ src, alt }, i) => (
-              <motion.div
-                key={i}
-                variants={item}
-                className="break-inside-avoid overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer"
+          {/* Day filter bar (horizontally scrollable on mobile) */}
+          <div className="flex gap-2 overflow-x-auto pb-3 mb-10 -mx-4 px-4 sm:flex-wrap sm:justify-center sm:mx-0 sm:px-0 scrollbar-hide">
+            {DAY_FILTERS.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setActiveDay(f.id)}
+                aria-pressed={activeDay === f.id}
+                className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all border ${
+                  activeDay === f.id
+                    ? "bg-primary text-white border-primary shadow-md"
+                    : "bg-white text-foreground/70 border-border hover:border-primary/50 hover:text-primary"
+                }`}
               >
-                <img
-                  src={src}
-                  alt={alt}
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </motion.div>
+                <span aria-hidden="true">{f.emoji}</span>{f.label}
+              </button>
             ))}
-          </motion.div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeDay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              {(activeDay === 0 ? [1, 2, 3, 4, 5] : [activeDay]).map((day) => (
+                <div key={day} className="mb-14 last:mb-0">
+                  <h3 className="text-xl md:text-2xl font-serif font-bold text-foreground mb-6 text-center sm:text-left">
+                    {DAY_HEADINGS[day]}
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+                    {GALLERY.filter((g) => g.day === day).map((g, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setLightbox(g)}
+                        aria-label={`View photo: ${g.alt}`}
+                        className="overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer aspect-[4/3]"
+                      >
+                        <img
+                          src={g.src}
+                          alt={g.alt}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
@@ -907,6 +974,41 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightbox(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lightbox.alt}
+          >
+            <button
+              onClick={() => setLightbox(null)}
+              aria-label="Close image"
+              className="absolute top-5 right-5 text-white/80 hover:text-white p-2"
+            >
+              <X className="h-8 w-8" />
+            </button>
+            <motion.img
+              key={lightbox.src}
+              src={lightbox.src}
+              alt={lightbox.alt}
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[85vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Footer ── */}
       <footer className="bg-foreground text-background py-10 text-center text-sm">
