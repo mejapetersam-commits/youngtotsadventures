@@ -163,7 +163,9 @@ export default function Register() {
       setIsSubmitted(true);
       window.scrollTo(0, 0);
     } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
+      // ApiError shape from custom-fetch: { data: { error?: string }, status, message }
+      const apiErr = err as { data?: { error?: string }; message?: string } | null;
+      const msg = apiErr?.data?.error ?? apiErr?.message ?? null;
       setSubmitError(msg ?? "Something went wrong. Please try again or WhatsApp 0720 764 275 for help.");
       setIsSubmitting(false);
     }
