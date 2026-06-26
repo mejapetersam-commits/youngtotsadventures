@@ -15,8 +15,6 @@ import { useGetRegistrationCount } from "@workspace/api-client-react";
 // Original approved photos (Hero slideshow + Day cards)
 import enankaLogo from "@assets/Enanka_art_gallery_logo_1781863628482.png";
 import enankaGallery from "@assets/Enanka_art_gallery_1781863628482.webp";
-import enankaClay from "@assets/Enanka__1781863628482.jpg";
-import enankaArt from "@assets/Enanka_art_1781863628482.webp";
 import enankaPotteryHero from "@assets/Enanka__1782458454898.jpg";
 
 import pinsLogo from "@assets/Pins_logo_1781863628483.jpg";
@@ -480,12 +478,8 @@ export default function Landing() {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={item}>
               <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow bg-white group">
                 <div className="flex flex-col md:flex-row">
-                  <div className="w-full md:w-2/5 p-1 bg-amber-50 overflow-hidden">
-                    <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden h-[260px] md:h-full md:min-h-[320px]">
-                      <img src={enankaPotteryHero} alt="Hands shaping clay on a pottery wheel" className="w-full h-full object-cover col-span-2 row-span-1 group-hover:scale-105 transition-transform duration-700" />
-                      <img src={enankaClay} alt="Clay Pottery" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <img src={enankaArt} alt="Art Studio" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    </div>
+                  <div className="w-full md:w-2/5 h-[260px] md:h-auto overflow-hidden bg-amber-50">
+                    <img src={enankaPotteryHero} alt="Hands shaping clay on a pottery wheel" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
                     <div className="flex items-center justify-between mb-4">
