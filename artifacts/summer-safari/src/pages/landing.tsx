@@ -1019,7 +1019,7 @@ export default function Landing() {
           <MapPin className="h-5 w-5 text-primary" />
           <span className="text-lg font-serif font-bold">Young Tots Edventures</span>
         </div>
-        <p className="opacity-50 text-xs mb-1">youngtotsadventures.replit.app</p>
+        <p className="opacity-50 text-xs mb-1">youngtotsedventures.co.ke</p>
         <p className="opacity-50">&copy; 2026 Young Tots Edventures. All Rights Reserved.</p>
       </footer>
     </div>
