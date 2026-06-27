@@ -531,7 +531,7 @@ export default function Register() {
                       <p className="mb-2 font-bold text-foreground">Parental Consent & Liability Waiver</p>
                       <p className="mb-2">I give permission for my child to attend the Young Tots Edventures Summer Safari 2026 and participate in all activities. I understand that the organizers will take all necessary precautions to ensure the safety of the children, but will not be held liable for any accidents, injuries, or loss of property that may occur during the program.</p>
                       <p className="mb-2">I authorize the organizers to seek emergency medical treatment for my child if necessary, and agree to cover any resulting medical expenses.</p>
-                      <p>The photos will be shared with the parents only and will not be used for promotional purposes.</p>
+                      <p>Photos of your child will be taken throughout the tour and shared daily via a secure Google Drive link accessible only to parents. These photos are solely for keeping parents updated and will not be used for promotional or marketing purposes.</p>
                     </div>
 
                     <FormField

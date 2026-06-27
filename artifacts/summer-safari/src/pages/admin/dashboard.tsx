@@ -308,7 +308,7 @@ export default function AdminDashboard() {
               <Table>
                 <TableHeader className="bg-muted/50">
                   <TableRow>
-                    <TableHead className="whitespace-nowrap"><SortButton column="id" label="ID" /></TableHead>
+                    <TableHead className="whitespace-nowrap">#</TableHead>
                     <TableHead className="whitespace-nowrap"><SortButton column="parentName" label="Parent Name" /></TableHead>
                     <TableHead className="whitespace-nowrap"><SortButton column="parentEmail" label="Email" /></TableHead>
                     <TableHead className="whitespace-nowrap"><SortButton column="parentPhone" label="Phone Number" /></TableHead>
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
                         key={reg.id}
                         className={`${idx % 2 === 1 ? "bg-muted/30" : ""} hover:bg-muted/60 transition-colors`}
                       >
-                        <TableCell className="font-mono text-sm text-muted-foreground">#{reg.id}</TableCell>
+                        <TableCell className="font-mono text-sm text-muted-foreground">{idx + 1}</TableCell>
                         <TableCell className="font-medium whitespace-nowrap">{reg.parentName}</TableCell>
                         <TableCell className="whitespace-nowrap">
                           <a href={`mailto:${reg.parentEmail}`} className="text-primary hover:underline">{reg.parentEmail}</a>
