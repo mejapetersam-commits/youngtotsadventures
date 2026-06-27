@@ -139,6 +139,16 @@ paths:
           in: query
           schema:
             type: integer
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [id, parentName, parentEmail, parentPhone, childName, childAge, paymentStatus, createdAt]
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
       responses:
         "200":
           description: List of registrations
@@ -212,7 +222,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Registration"
+                $ref: "#/components/schemas/PaymentStatusUpdateResult"
         "404":
           description: Not found
 
@@ -221,6 +231,15 @@ paths:
       operationId: exportRegistrations
       tags: [admin]
       summary: Export registrations as CSV
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: paymentStatus
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: CSV export
@@ -448,6 +467,16 @@ components:
         paymentStatus:
           type: string
           enum: [pending, confirmed, rejected]
+
+    PaymentStatusUpdateResult:
+      allOf:
+        - $ref: "#/components/schemas/Registration"
+        - type: object
+          properties:
+            emailSent:
+              type: boolean
+            emailError:
+              type: ["string", "null"]
 
     AdminLoginInput:
       type: object

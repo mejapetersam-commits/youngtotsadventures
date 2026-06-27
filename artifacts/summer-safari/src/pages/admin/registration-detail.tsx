@@ -25,14 +25,27 @@ export default function RegistrationDetail() {
 
   const handleStatusChange = async (newStatus: string) => {
     try {
-      await updateStatusMutation.mutateAsync({
+      const result = await updateStatusMutation.mutateAsync({
         id,
         data: { paymentStatus: newStatus as PaymentStatusUpdatePaymentStatus }
       });
-      toast({
-        title: "Status updated",
-        description: `Registration status changed to ${newStatus}.`,
-      });
+      if (result.emailSent) {
+        toast({
+          title: "Payment confirmed",
+          description: "A confirmation email has been sent to the parent.",
+        });
+      } else if (result.emailError) {
+        toast({
+          title: "Payment confirmed",
+          description: result.emailError,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Status updated",
+          description: `Registration status changed to ${newStatus}.`,
+        });
+      }
     } catch (error) {
       toast({
         title: "Update failed",

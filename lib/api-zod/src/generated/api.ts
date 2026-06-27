@@ -120,7 +120,9 @@ export const ListRegistrationsQueryParams = zod.object({
   "search": zod.coerce.string().optional(),
   "paymentStatus": zod.coerce.string().optional(),
   "page": zod.coerce.number().optional(),
-  "limit": zod.coerce.number().optional()
+  "limit": zod.coerce.number().optional(),
+  "sortBy": zod.enum(['id', 'parentName', 'parentEmail', 'parentPhone', 'childName', 'childAge', 'paymentStatus', 'createdAt']).optional(),
+  "sortOrder": zod.enum(['asc', 'desc']).optional()
 })
 
 export const ListRegistrationsResponse = zod.object({
@@ -248,6 +250,18 @@ export const UpdatePaymentStatusResponse = zod.object({
   "paymentStatus": zod.enum(['pending', 'confirmed', 'rejected']),
   "paymentProofUrl": zod.string().nullish(),
   "createdAt": zod.string()
+}).and(zod.object({
+  "emailSent": zod.boolean().optional(),
+  "emailError": zod.string().nullish()
+}))
+
+
+/**
+ * @summary Export registrations as CSV
+ */
+export const ExportRegistrationsQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "paymentStatus": zod.coerce.string().optional()
 })
 
 

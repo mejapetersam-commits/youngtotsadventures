@@ -24,10 +24,12 @@ import type {
   AuthToken,
   DeleteResult,
   ErrorResponse,
+  ExportRegistrationsParams,
   HealthStatus,
   ListRegistrationsParams,
   PaymentProofInput,
   PaymentStatusUpdate,
+  PaymentStatusUpdateResult,
   Registration,
   RegistrationCount,
   RegistrationInput,
@@ -659,9 +661,9 @@ export const getUpdatePaymentStatusUrl = (id: number,) => {
  * @summary Update payment status (admin)
  */
 export const updatePaymentStatus = async (id: number,
-    paymentStatusUpdate: PaymentStatusUpdate, options?: RequestInit): Promise<Registration> => {
+    paymentStatusUpdate: PaymentStatusUpdate, options?: RequestInit): Promise<PaymentStatusUpdateResult> => {
 
-  return customFetch<Registration>(getUpdatePaymentStatusUrl(id),
+  return customFetch<PaymentStatusUpdateResult>(getUpdatePaymentStatusUrl(id),
   {
     ...options,
     method: 'PATCH',
@@ -719,20 +721,27 @@ export const useUpdatePaymentStatus = <TError = ErrorType<void>,
       return useMutation(getUpdatePaymentStatusMutationOptions(options));
     }
 
-export const getExportRegistrationsUrl = () => {
+export const getExportRegistrationsUrl = (params?: ExportRegistrationsParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/api/admin/registrations/export`
+  return stringifiedParams.length > 0 ? `/api/admin/registrations/export?${stringifiedParams}` : `/api/admin/registrations/export`
 }
 
 /**
  * @summary Export registrations as CSV
  */
-export const exportRegistrations = async ( options?: RequestInit): Promise<string> => {
+export const exportRegistrations = async (params?: ExportRegistrationsParams, options?: RequestInit): Promise<string> => {
 
-  return customFetch<string>(getExportRegistrationsUrl(),
+  return customFetch<string>(getExportRegistrationsUrl(params),
   {
     ...options,
     method: 'GET'
@@ -745,23 +754,23 @@ export const exportRegistrations = async ( options?: RequestInit): Promise<strin
 
 
 
-export const getExportRegistrationsQueryKey = () => {
+export const getExportRegistrationsQueryKey = (params?: ExportRegistrationsParams,) => {
     return [
-    `/api/admin/registrations/export`
+    `/api/admin/registrations/export`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getExportRegistrationsQueryOptions = <TData = Awaited<ReturnType<typeof exportRegistrations>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof exportRegistrations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getExportRegistrationsQueryOptions = <TData = Awaited<ReturnType<typeof exportRegistrations>>, TError = ErrorType<unknown>>(params?: ExportRegistrationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof exportRegistrations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getExportRegistrationsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getExportRegistrationsQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof exportRegistrations>>> = ({ signal }) => exportRegistrations({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof exportRegistrations>>> = ({ signal }) => exportRegistrations(params, { signal, ...requestOptions });
 
 
 
@@ -779,11 +788,11 @@ export type ExportRegistrationsQueryError = ErrorType<unknown>
  */
 
 export function useExportRegistrations<TData = Awaited<ReturnType<typeof exportRegistrations>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof exportRegistrations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+ params?: ExportRegistrationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof exportRegistrations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getExportRegistrationsQueryOptions(options)
+  const queryOptions = getExportRegistrationsQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

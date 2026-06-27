@@ -1,15 +1,50 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
 import { db, registrationsTable } from "@workspace/db";
-import { eq, ilike, or, count, sql, and } from "drizzle-orm";
+import { eq, ilike, or, count, sql, and, asc, desc, type SQL } from "drizzle-orm";
 import {
   AdminLoginBody,
   ListRegistrationsQueryParams,
+  ExportRegistrationsQueryParams,
   UpdatePaymentStatusParams,
   UpdatePaymentStatusBody,
   GetRegistrationParams,
   DeleteRegistrationParams,
 } from "@workspace/api-zod";
 import jwt from "jsonwebtoken";
+import { sendPaymentConfirmationEmail } from "../lib/email";
+
+const PROGRAM_NAME = "Summer Safari 2026";
+
+const SORT_COLUMNS = {
+  id: registrationsTable.id,
+  parentName: registrationsTable.parentName,
+  parentEmail: registrationsTable.parentEmail,
+  parentPhone: registrationsTable.parentPhone,
+  childName: registrationsTable.childName,
+  childAge: registrationsTable.childAge,
+  paymentStatus: registrationsTable.paymentStatus,
+  createdAt: registrationsTable.createdAt,
+} as const;
+
+function buildSearchFilter(search: string | undefined): SQL | undefined {
+  if (!search) return undefined;
+  return or(
+    ilike(registrationsTable.childName, `%${search}%`),
+    ilike(registrationsTable.parentName, `%${search}%`),
+    ilike(registrationsTable.parentEmail, `%${search}%`),
+    ilike(registrationsTable.parentPhone, `%${search}%`),
+  );
+}
+
+function buildStatusFilter(paymentStatus: string | undefined): SQL | undefined {
+  if (paymentStatus && ["pending", "confirmed", "rejected"].includes(paymentStatus)) {
+    return eq(
+      registrationsTable.paymentStatus,
+      paymentStatus as "pending" | "confirmed" | "rejected",
+    );
+  }
+  return undefined;
+}
 
 const router = Router();
 
@@ -60,32 +95,23 @@ router.get("/admin/registrations", requireAdmin, async (req, res) => {
   const offset = (page - 1) * limit;
   const search = params.search as string | undefined;
   const paymentStatus = params.paymentStatus as string | undefined;
+  const sortBy = (params.sortBy as keyof typeof SORT_COLUMNS | undefined) ?? "createdAt";
+  const sortOrder = (params.sortOrder as "asc" | "desc" | undefined) ?? "desc";
 
-  const conditions = [];
-  if (search) {
-    conditions.push(
-      or(
-        ilike(registrationsTable.childName, `%${search}%`),
-        ilike(registrationsTable.parentName, `%${search}%`),
-        ilike(registrationsTable.parentEmail, `%${search}%`),
-        ilike(registrationsTable.parentPhone, `%${search}%`)
-      )
-    );
-  }
-  if (paymentStatus && ["pending", "confirmed", "rejected"].includes(paymentStatus)) {
-    conditions.push(
-      eq(registrationsTable.paymentStatus, paymentStatus as "pending" | "confirmed" | "rejected")
-    );
-  }
-
+  const conditions = [buildSearchFilter(search), buildStatusFilter(paymentStatus)].filter(
+    (c): c is SQL => c !== undefined,
+  );
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const sortColumn = SORT_COLUMNS[sortBy] ?? registrationsTable.createdAt;
+  const orderByClause = sortOrder === "asc" ? asc(sortColumn) : desc(sortColumn);
 
   const [rows, totalRows] = await Promise.all([
     db
       .select()
       .from(registrationsTable)
       .where(whereClause)
-      .orderBy(sql`${registrationsTable.createdAt} DESC`)
+      .orderBy(orderByClause)
       .limit(limit)
       .offset(offset),
     db
@@ -104,27 +130,46 @@ router.get("/admin/registrations", requireAdmin, async (req, res) => {
 
 // GET /admin/registrations/export
 router.get("/admin/registrations/export", requireAdmin, async (req, res) => {
+  const paramsParsed = ExportRegistrationsQueryParams.safeParse(req.query);
+  const params = paramsParsed.success ? paramsParsed.data : {};
+  const search = params.search as string | undefined;
+  const paymentStatus = params.paymentStatus as string | undefined;
+
+  const conditions = [buildSearchFilter(search), buildStatusFilter(paymentStatus)].filter(
+    (c): c is SQL => c !== undefined,
+  );
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
   const rows = await db
     .select()
     .from(registrationsTable)
+    .where(whereClause)
     .orderBy(sql`${registrationsTable.createdAt} DESC`);
 
   const headers = [
-    "ID", "Child Name", "Child DOB", "Age", "Parent Name", "Parent Phone", "Parent Email",
-    "Home Address", "Allergies", "Medical Conditions", "Physical Limitations", "Special Notes",
-    "Emergency Contact", "Relationship", "Emergency Phone", "Authorized Pickup", "Pickup Phone",
-    "Consent Accepted", "Consent Signed By", "Consent Timestamp",
-    "Payment Status", "Payment Proof URL", "Registered At"
+    "ID", "Parent Name", "Email", "Phone Number", "Child Name", "Child Age",
+    "Program/Event", "Registration Date", "Payment Status",
   ];
 
-  const csvRows = rows.map(r => [
-    r.id, r.childName, r.childDateOfBirth, r.childAge, r.parentName, r.parentPhone, r.parentEmail,
-    r.homeAddress, r.allergies ?? "", r.medicalConditions ?? "", r.physicalLimitations ?? "", r.specialNotes ?? "",
-    r.emergencyContactName, r.emergencyContactRelationship, r.emergencyContactPhone,
-    r.authorizedPickupPerson, r.authorizedPickupPhone,
-    r.consentAccepted ? "Yes" : "No", r.consentSignedBy, r.consentTimestamp?.toISOString() ?? "",
-    r.paymentStatus, r.paymentProofUrl ?? "", r.createdAt.toISOString()
-  ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(","));
+  const formatStatus = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const formatDate = (d: Date) =>
+    d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+
+  const csvRows = rows.map((r) =>
+    [
+      r.id,
+      r.parentName,
+      r.parentEmail,
+      r.parentPhone,
+      r.childName,
+      r.childAge,
+      PROGRAM_NAME,
+      formatDate(r.createdAt),
+      formatStatus(r.paymentStatus),
+    ]
+      .map((v) => `"${String(v).replace(/"/g, '""')}"`)
+      .join(","),
+  );
 
   const csv = [headers.join(","), ...csvRows].join("\n");
 
@@ -184,17 +229,68 @@ router.patch("/admin/registrations/:id/payment-status", requireAdmin, async (req
     return res.status(400).json({ error: "Validation failed" });
   }
 
-  const [updated] = await db
-    .update(registrationsTable)
-    .set({ paymentStatus: bodyParsed.data.paymentStatus as "pending" | "confirmed" | "rejected" })
-    .where(eq(registrationsTable.id, paramsParsed.data.id))
-    .returning();
+  const id = paramsParsed.data.id;
+  const newStatus = bodyParsed.data.paymentStatus as "pending" | "confirmed" | "rejected";
+
+  let updated: typeof registrationsTable.$inferSelect | undefined;
+  let didTransitionToConfirmed = false;
+
+  if (newStatus === "confirmed") {
+    // Atomically flip pending -> confirmed. This both detects the transition and guards
+    // against concurrent confirms (double-click / multiple admins) sending duplicate emails.
+    const [transitioned] = await db
+      .update(registrationsTable)
+      .set({ paymentStatus: "confirmed" })
+      .where(
+        and(
+          eq(registrationsTable.id, id),
+          eq(registrationsTable.paymentStatus, "pending"),
+        ),
+      )
+      .returning();
+
+    if (transitioned) {
+      updated = transitioned;
+      didTransitionToConfirmed = true;
+    } else {
+      // Row was not pending (already confirmed, or rejected -> confirmed): set status
+      // without sending an email, per the "only pending -> confirmed" requirement.
+      const [u] = await db
+        .update(registrationsTable)
+        .set({ paymentStatus: "confirmed" })
+        .where(eq(registrationsTable.id, id))
+        .returning();
+      updated = u;
+    }
+  } else {
+    const [u] = await db
+      .update(registrationsTable)
+      .set({ paymentStatus: newStatus })
+      .where(eq(registrationsTable.id, id))
+      .returning();
+    updated = u;
+  }
 
   if (!updated) {
     return res.status(404).json({ error: "Not found" });
   }
 
-  return res.json(serializeRegistration(updated));
+  // Send the confirmation email ONLY on a genuine pending -> confirmed transition.
+  let emailSent = false;
+  let emailError: string | null = null;
+  if (didTransitionToConfirmed) {
+    const result = await sendPaymentConfirmationEmail({
+      parentName: updated.parentName,
+      parentEmail: updated.parentEmail,
+      childName: updated.childName,
+      registrationId: updated.id,
+      registeredAt: updated.createdAt,
+    });
+    emailSent = result.sent;
+    emailError = result.error;
+  }
+
+  return res.json({ ...serializeRegistration(updated), emailSent, emailError });
 });
 
 // GET /admin/stats

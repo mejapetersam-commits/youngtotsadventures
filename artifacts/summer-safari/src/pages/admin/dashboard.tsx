@@ -1,11 +1,22 @@
 import { Link } from "wouter";
-import { useGetStats, useListRegistrations, useExportRegistrations, getExportRegistrationsQueryKey, useDeleteRegistration, getListRegistrationsQueryKey, getGetStatsQueryKey } from "@workspace/api-client-react";
+import {
+  useGetStats,
+  useListRegistrations,
+  useExportRegistrations,
+  getExportRegistrationsQueryKey,
+  useDeleteRegistration,
+  useUpdatePaymentStatus,
+  getListRegistrationsQueryKey,
+  getGetStatsQueryKey,
+  type ListRegistrationsSortBy as SortByType,
+} from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { format } from "date-fns";
-import { 
-  Users, CheckCircle2, Clock, Search, FileDown, 
-  MapPin, LogOut, ChevronRight, Trash2, Loader2
+import {
+  Users, CheckCircle2, Clock, Search, FileDown,
+  MapPin, LogOut, ChevronRight, Trash2, Loader2,
+  ChevronLeft, ArrowUp, ArrowDown, ChevronsUpDown,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,31 +31,109 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+
+const PAGE_SIZE = 20;
+const PROGRAM_NAME = "Summer Safari 2026";
+
+type SortBy =
+  | "id" | "parentName" | "parentEmail" | "parentPhone"
+  | "childName" | "childAge" | "paymentStatus" | "createdAt";
+type SortOrder = "asc" | "desc";
 
 export default function AdminDashboard() {
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  
+  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortBy>("createdAt");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+
   const { data: stats } = useGetStats();
+
+  const exportParams = {
+    search: search || undefined,
+    paymentStatus: statusFilter !== "all" ? statusFilter : undefined,
+  };
+
   const { data: registrationsData } = useListRegistrations({
     search: search || undefined,
     paymentStatus: statusFilter !== "all" ? statusFilter : undefined,
-    limit: 50
+    page,
+    limit: PAGE_SIZE,
+    sortBy: sortBy as SortByType,
+    sortOrder,
   });
-  
-  const { refetch: fetchExport, isFetching: isExporting } = useExportRegistrations({
-    query: { enabled: false, queryKey: getExportRegistrationsQueryKey() }
+
+  const { refetch: fetchExport, isFetching: isExporting } = useExportRegistrations(exportParams, {
+    query: { enabled: false, queryKey: getExportRegistrationsQueryKey(exportParams) },
   });
 
   const queryClient = useQueryClient();
   const deleteMutation = useDeleteRegistration();
+  const updateStatusMutation = useUpdatePaymentStatus();
   const [isClearingAll, setIsClearingAll] = useState(false);
+  const [confirmingId, setConfirmingId] = useState<number | null>(null);
+
+  const rows = registrationsData?.registrations ?? [];
+  const total = registrationsData?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const rangeStart = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const rangeEnd = Math.min(page * PAGE_SIZE, total);
 
   const refreshData = () =>
     Promise.all([
       queryClient.invalidateQueries({ queryKey: getListRegistrationsQueryKey() }),
       queryClient.invalidateQueries({ queryKey: getGetStatsQueryKey() }),
     ]);
+
+  const resetToFirstPage = () => setPage(1);
+
+  const handleSort = (column: SortBy) => {
+    if (sortBy === column) {
+      setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+    resetToFirstPage();
+  };
+
+  const handleConfirm = async (id: number, childName: string) => {
+    setConfirmingId(id);
+    try {
+      const result = await updateStatusMutation.mutateAsync({
+        id,
+        data: { paymentStatus: "confirmed" },
+      });
+      await refreshData();
+      if (result.emailSent) {
+        toast({
+          title: "Payment confirmed",
+          description: `Confirmation email sent to the parent for ${childName}.`,
+        });
+      } else if (result.emailError) {
+        toast({
+          title: "Payment confirmed",
+          description: result.emailError,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Payment confirmed",
+          description: `Payment for ${childName} marked as confirmed.`,
+        });
+      }
+    } catch {
+      toast({
+        title: "Update failed",
+        description: "Could not confirm this payment. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setConfirmingId(null);
+    }
+  };
 
   const handleDelete = async (id: number, childName: string) => {
     if (!window.confirm(`Delete the registration for "${childName}"? This cannot be undone.`)) return;
@@ -57,7 +146,6 @@ export default function AdminDashboard() {
   };
 
   const handleClearAll = async () => {
-    const rows = registrationsData?.registrations ?? [];
     if (rows.length === 0) return;
     if (!window.confirm(`Delete the ${rows.length} registration(s) currently shown? This permanently removes them and cannot be undone.`)) return;
     setIsClearingAll(true);
@@ -97,12 +185,27 @@ export default function AdminDashboard() {
   };
 
   const getStatusBadge = (status: string) => {
-    switch(status) {
-      case 'confirmed': return <Badge className="bg-green-100 text-green-800 border-green-200">Confirmed</Badge>;
-      case 'rejected': return <Badge className="bg-red-100 text-red-800 border-red-200">Rejected</Badge>;
+    switch (status) {
+      case "confirmed": return <Badge className="bg-green-100 text-green-800 border-green-200">Confirmed</Badge>;
+      case "rejected": return <Badge className="bg-red-100 text-red-800 border-red-200">Rejected</Badge>;
       default: return <Badge className="bg-amber-100 text-amber-800 border-amber-200">Pending</Badge>;
     }
   };
+
+  const SortButton = ({ column, label }: { column: SortBy; label: string }) => (
+    <button
+      type="button"
+      onClick={() => handleSort(column)}
+      className="inline-flex items-center gap-1 font-medium hover:text-foreground transition-colors"
+    >
+      {label}
+      {sortBy === column ? (
+        sortOrder === "asc" ? <ArrowUp className="h-3.5 w-3.5" /> : <ArrowDown className="h-3.5 w-3.5" />
+      ) : (
+        <ChevronsUpDown className="h-3.5 w-3.5 opacity-40" />
+      )}
+    </button>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-background">
@@ -168,13 +271,13 @@ export default function AdminDashboard() {
               <div className="relative w-full sm:w-64">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search names, phones..."
+                  placeholder="Search name, child, email..."
                   className="pl-9"
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => { setSearch(e.target.value); resetToFirstPage(); }}
                 />
               </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); resetToFirstPage(); }}>
                 <SelectTrigger className="w-full sm:w-[140px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
@@ -186,17 +289,17 @@ export default function AdminDashboard() {
                 </SelectContent>
               </Select>
               <Button variant="outline" onClick={handleExport} disabled={isExporting} className="w-full sm:w-auto gap-2">
-                <FileDown className="h-4 w-4" />
+                {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
                 Export CSV
               </Button>
               <Button
                 variant="outline"
                 onClick={handleClearAll}
-                disabled={isClearingAll || (registrationsData?.registrations?.length ?? 0) === 0}
+                disabled={isClearingAll || rows.length === 0}
                 className="w-full sm:w-auto gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
               >
                 {isClearingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                Clear Shown{(registrationsData?.registrations?.length ?? 0) > 0 ? ` (${registrationsData?.registrations?.length})` : ""}
+                Clear Shown{rows.length > 0 ? ` (${rows.length})` : ""}
               </Button>
             </div>
           </CardHeader>
@@ -205,35 +308,61 @@ export default function AdminDashboard() {
               <Table>
                 <TableHeader className="bg-muted/50">
                   <TableRow>
-                    <TableHead>Child Name</TableHead>
-                    <TableHead>Age</TableHead>
-                    <TableHead>Parent Name</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="id" label="ID" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="parentName" label="Parent Name" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="parentEmail" label="Email" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="parentPhone" label="Phone Number" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="childName" label="Child Name" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="childAge" label="Child Age" /></TableHead>
+                    <TableHead className="whitespace-nowrap">Program/Event</TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="createdAt" label="Registration Date" /></TableHead>
+                    <TableHead className="whitespace-nowrap"><SortButton column="paymentStatus" label="Payment Status" /></TableHead>
+                    <TableHead className="text-right whitespace-nowrap">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {registrationsData?.registrations?.length === 0 ? (
+                  {rows.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                      <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
                         No registrations found.
                       </TableCell>
                     </TableRow>
                   ) : (
-                    registrationsData?.registrations?.map((reg) => (
-                      <TableRow key={reg.id} className="cursor-pointer hover:bg-muted/50 transition-colors">
-                        <TableCell className="font-medium">{reg.childName}</TableCell>
-                        <TableCell>{reg.childAge} yrs</TableCell>
-                        <TableCell>{reg.parentName}</TableCell>
-                        <TableCell>{reg.parentPhone}</TableCell>
-                        <TableCell>{getStatusBadge(reg.paymentStatus)}</TableCell>
-                        <TableCell className="text-muted-foreground text-sm">
-                          {format(new Date(reg.createdAt), 'MMM d, yyyy')}
+                    rows.map((reg, idx) => (
+                      <TableRow
+                        key={reg.id}
+                        className={`${idx % 2 === 1 ? "bg-muted/30" : ""} hover:bg-muted/60 transition-colors`}
+                      >
+                        <TableCell className="font-mono text-sm text-muted-foreground">#{reg.id}</TableCell>
+                        <TableCell className="font-medium whitespace-nowrap">{reg.parentName}</TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          <a href={`mailto:${reg.parentEmail}`} className="text-primary hover:underline">{reg.parentEmail}</a>
                         </TableCell>
+                        <TableCell className="whitespace-nowrap">{reg.parentPhone}</TableCell>
+                        <TableCell className="font-medium whitespace-nowrap">{reg.childName}</TableCell>
+                        <TableCell>{reg.childAge} yrs</TableCell>
+                        <TableCell className="whitespace-nowrap text-muted-foreground">{PROGRAM_NAME}</TableCell>
+                        <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
+                          {format(new Date(reg.createdAt), "MMM d, yyyy")}
+                        </TableCell>
+                        <TableCell>{getStatusBadge(reg.paymentStatus)}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-1">
+                            {reg.paymentStatus === "pending" && (
+                              <button
+                                type="button"
+                                onClick={() => handleConfirm(reg.id, reg.childName)}
+                                disabled={updateStatusMutation.isPending}
+                                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 rounded-md transition-colors disabled:opacity-50 whitespace-nowrap"
+                              >
+                                {confirmingId === reg.id ? (
+                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                  <CheckCircle2 className="h-3.5 w-3.5" />
+                                )}
+                                Mark as Confirmed
+                              </button>
+                            )}
                             <button
                               type="button"
                               onClick={() => handleDelete(reg.id, reg.childName)}
@@ -255,6 +384,36 @@ export default function AdminDashboard() {
                   )}
                 </TableBody>
               </Table>
+            </div>
+
+            {/* Pagination */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-4 border-t border-border">
+              <p className="text-sm text-muted-foreground">
+                {total === 0 ? "No results" : `Showing ${rangeStart}–${rangeEnd} of ${total}`}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="gap-1"
+                >
+                  <ChevronLeft className="h-4 w-4" /> Previous
+                </Button>
+                <span className="text-sm text-muted-foreground px-2">
+                  Page {page} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages}
+                  className="gap-1"
+                >
+                  Next <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

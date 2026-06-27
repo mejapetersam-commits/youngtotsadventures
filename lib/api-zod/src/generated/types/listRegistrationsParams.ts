@@ -5,10 +5,14 @@
  * Young Tots Edventures Summer Safari 2026 API
  * OpenAPI spec version: 0.1.0
  */
+import type { ListRegistrationsSortBy } from './listRegistrationsSortBy';
+import type { ListRegistrationsSortOrder } from './listRegistrationsSortOrder';
 
 export type ListRegistrationsParams = {
 search?: string;
 paymentStatus?: string;
 page?: number;
 limit?: number;
+sortBy?: ListRegistrationsSortBy;
+sortOrder?: ListRegistrationsSortOrder;
 };

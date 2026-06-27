@@ -122,6 +122,12 @@ export interface PaymentStatusUpdate {
   paymentStatus: PaymentStatusUpdatePaymentStatus;
 }
 
+export type PaymentStatusUpdateResult = Registration & ({
+  emailSent?: boolean;
+  /** @nullable */
+  emailError?: string | null;
+});
+
 export interface AdminLoginInput {
   username: string;
   password: string;
@@ -151,5 +157,34 @@ search?: string;
 paymentStatus?: string;
 page?: number;
 limit?: number;
+sortBy?: ListRegistrationsSortBy;
+sortOrder?: ListRegistrationsSortOrder;
+};
+
+export type ListRegistrationsSortBy = typeof ListRegistrationsSortBy[keyof typeof ListRegistrationsSortBy];
+
+
+export const ListRegistrationsSortBy = {
+  id: 'id',
+  parentName: 'parentName',
+  parentEmail: 'parentEmail',
+  parentPhone: 'parentPhone',
+  childName: 'childName',
+  childAge: 'childAge',
+  paymentStatus: 'paymentStatus',
+  createdAt: 'createdAt',
+} as const;
+
+export type ListRegistrationsSortOrder = typeof ListRegistrationsSortOrder[keyof typeof ListRegistrationsSortOrder];
+
+
+export const ListRegistrationsSortOrder = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type ExportRegistrationsParams = {
+search?: string;
+paymentStatus?: string;
 };
 
