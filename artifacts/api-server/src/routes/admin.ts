@@ -1,5 +1,5 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
-import { db, registrationsTable } from "@workspace/db";
+import { db, registrationsTable, reviewsTable } from "@workspace/db";
 import { eq, ilike, or, count, sql, and, asc, desc, type SQL } from "drizzle-orm";
 import {
   AdminLoginBody,
@@ -9,6 +9,10 @@ import {
   UpdatePaymentStatusBody,
   GetRegistrationParams,
   DeleteRegistrationParams,
+  ListReviewsQueryParams,
+  UpdateReviewParams,
+  UpdateReviewBody,
+  DeleteReviewParams,
 } from "@workspace/api-zod";
 import jwt from "jsonwebtoken";
 import { sendPaymentConfirmationEmail } from "../lib/email";
@@ -326,6 +330,106 @@ router.get("/admin/stats", requireAdmin, async (req, res) => {
     todayRegistrations: Number(todayRows[0]?.count ?? 0),
   });
 });
+
+// GET /admin/reviews
+router.get("/admin/reviews", requireAdmin, async (req, res) => {
+  const paramsParsed = ListReviewsQueryParams.safeParse(req.query);
+  const params = paramsParsed.success ? paramsParsed.data : {};
+
+  const page = Number(params.page ?? 1);
+  const limit = Number(params.limit ?? 20);
+  const offset = (page - 1) * limit;
+  const status = params.status as string | undefined;
+
+  const whereClause =
+    status && ["pending", "approved", "rejected"].includes(status)
+      ? eq(reviewsTable.status, status as "pending" | "approved" | "rejected")
+      : undefined;
+
+  const [rows, totalRows] = await Promise.all([
+    db
+      .select()
+      .from(reviewsTable)
+      .where(whereClause)
+      .orderBy(desc(reviewsTable.createdAt))
+      .limit(limit)
+      .offset(offset),
+    db.select({ count: count() }).from(reviewsTable).where(whereClause),
+  ]);
+
+  return res.json({
+    reviews: rows.map(serializeReview),
+    total: Number(totalRows[0]?.count ?? 0),
+    page,
+    limit,
+  });
+});
+
+// PATCH /admin/reviews/:id
+router.patch("/admin/reviews/:id", requireAdmin, async (req, res) => {
+  const paramsParsed = UpdateReviewParams.safeParse({ id: Number(req.params.id) });
+  if (!paramsParsed.success) {
+    return res.status(400).json({ error: "Invalid id" });
+  }
+
+  const bodyParsed = UpdateReviewBody.safeParse(req.body);
+  if (
+    !bodyParsed.success ||
+    (bodyParsed.data.rating !== undefined && !Number.isInteger(bodyParsed.data.rating))
+  ) {
+    return res.status(400).json({ error: "Validation failed" });
+  }
+
+  const changes: Partial<typeof reviewsTable.$inferInsert> = {};
+  if (bodyParsed.data.name !== undefined) changes.name = bodyParsed.data.name.trim();
+  if (bodyParsed.data.rating !== undefined) changes.rating = bodyParsed.data.rating;
+  if (bodyParsed.data.review !== undefined) changes.review = bodyParsed.data.review.trim();
+  if (bodyParsed.data.status !== undefined) {
+    changes.status = bodyParsed.data.status as "pending" | "approved" | "rejected";
+  }
+
+  if (Object.keys(changes).length === 0) {
+    return res.status(400).json({ error: "No changes provided" });
+  }
+
+  const [updated] = await db
+    .update(reviewsTable)
+    .set(changes)
+    .where(eq(reviewsTable.id, paramsParsed.data.id))
+    .returning();
+
+  if (!updated) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  return res.json(serializeReview(updated));
+});
+
+// DELETE /admin/reviews/:id
+router.delete("/admin/reviews/:id", requireAdmin, async (req, res) => {
+  const paramsParsed = DeleteReviewParams.safeParse({ id: Number(req.params.id) });
+  if (!paramsParsed.success) {
+    return res.status(400).json({ error: "Invalid id" });
+  }
+
+  const [deleted] = await db
+    .delete(reviewsTable)
+    .where(eq(reviewsTable.id, paramsParsed.data.id))
+    .returning({ id: reviewsTable.id });
+
+  if (!deleted) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  return res.json({ id: deleted.id });
+});
+
+function serializeReview(r: typeof reviewsTable.$inferSelect) {
+  return {
+    ...r,
+    createdAt: r.createdAt.toISOString(),
+  };
+}
 
 function serializeRegistration(r: typeof registrationsTable.$inferSelect) {
   return {

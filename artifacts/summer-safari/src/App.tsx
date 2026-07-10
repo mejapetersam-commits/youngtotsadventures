@@ -7,6 +7,7 @@ import Landing from "@/pages/landing";
 import Register from "@/pages/register";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
+import AdminReviews from "@/pages/admin/reviews";
 import RegistrationDetail from "@/pages/admin/registration-detail";
 
 const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/reviews" component={AdminReviews} />
       <Route path="/admin/registrations/:id" component={RegistrationDetail} />
       <Route component={NotFound} />
     </Switch>

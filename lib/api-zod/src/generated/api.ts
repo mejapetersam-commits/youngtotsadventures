@@ -100,6 +100,117 @@ export const UploadPaymentProofResponse = zod.object({
 
 
 /**
+ * @summary List approved reviews (public)
+ */
+export const ListPublicReviewsResponse = zod.object({
+  "reviews": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "rating": zod.number(),
+  "review": zod.string(),
+  "createdAt": zod.string()
+})),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Submit a new review (public, pending approval)
+ */
+export const createReviewBodyNameMin = 2;
+export const createReviewBodyNameMax = 100;
+
+export const createReviewBodyEmailMax = 200;
+
+export const createReviewBodyRatingMax = 5;
+
+export const createReviewBodyReviewMin = 10;
+export const createReviewBodyReviewMax = 1000;
+
+
+
+export const CreateReviewBody = zod.object({
+  "name": zod.string().min(createReviewBodyNameMin).max(createReviewBodyNameMax),
+  "email": zod.string().email().max(createReviewBodyEmailMax),
+  "rating": zod.number().min(1).max(createReviewBodyRatingMax),
+  "review": zod.string().min(createReviewBodyReviewMin).max(createReviewBodyReviewMax),
+  "website": zod.string().optional().describe('Honeypot field — must be empty; bots that fill it are rejected silently.')
+})
+
+
+/**
+ * @summary List all reviews (admin)
+ */
+export const ListReviewsQueryParams = zod.object({
+  "status": zod.enum(['pending', 'approved', 'rejected']).optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListReviewsResponse = zod.object({
+  "reviews": zod.array(zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "email": zod.string(),
+  "rating": zod.number(),
+  "review": zod.string(),
+  "status": zod.enum(['pending', 'approved', 'rejected']),
+  "createdAt": zod.string()
+})),
+  "total": zod.number(),
+  "page": zod.number(),
+  "limit": zod.number()
+})
+
+
+/**
+ * @summary Update a review's content or status (admin)
+ */
+export const UpdateReviewParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const updateReviewBodyNameMin = 2;
+export const updateReviewBodyNameMax = 100;
+
+export const updateReviewBodyRatingMax = 5;
+
+export const updateReviewBodyReviewMin = 10;
+export const updateReviewBodyReviewMax = 1000;
+
+
+
+export const UpdateReviewBody = zod.object({
+  "name": zod.string().min(updateReviewBodyNameMin).max(updateReviewBodyNameMax).optional(),
+  "rating": zod.number().min(1).max(updateReviewBodyRatingMax).optional(),
+  "review": zod.string().min(updateReviewBodyReviewMin).max(updateReviewBodyReviewMax).optional(),
+  "status": zod.enum(['pending', 'approved', 'rejected']).optional()
+})
+
+export const UpdateReviewResponse = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "email": zod.string(),
+  "rating": zod.number(),
+  "review": zod.string(),
+  "status": zod.enum(['pending', 'approved', 'rejected']),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Delete a review (admin)
+ */
+export const DeleteReviewParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteReviewResponse = zod.object({
+  "id": zod.number()
+})
+
+
+/**
  * @summary Admin login
  */
 export const AdminLoginBody = zod.object({

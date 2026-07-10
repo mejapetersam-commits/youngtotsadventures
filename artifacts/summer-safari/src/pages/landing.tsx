@@ -11,6 +11,7 @@ import {
   Mail, Compass, BookOpen, Leaf, PartyPopper, X
 } from "lucide-react";
 import { useGetRegistrationCount } from "@workspace/api-client-react";
+import ReviewsSection from "@/components/reviews-section";
 
 // Original approved photos (Hero slideshow + Day cards)
 import enankaLogo from "@assets/Enanka_art_gallery_logo_1781863628482.png";
@@ -849,44 +850,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
-      <section className="py-24 px-4 bg-amber-50">
-        <div className="max-w-5xl mx-auto">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="text-center mb-12">
-            <motion.span variants={item} className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-4 uppercase tracking-wide">
-              Parent Stories
-            </motion.span>
-            <motion.h2 variants={item} className="text-4xl font-serif font-bold text-foreground mb-4">
-              What Families Are Saying
-            </motion.h2>
-          </motion.div>
-
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                quote: "We'd love to hear from you after the safari! Testimonials from our first families coming soon.",
-              },
-              {
-                quote: "Be part of Summer Safari 2026 and share your child's experience with other families.",
-              },
-              {
-                quote: "Our first cohort of families will be sharing their stories in July 2026.",
-              },
-            ].map(({ quote }, i) => (
-              <motion.div key={i} variants={item}>
-                <Card className="h-full border-0 shadow-md hover:shadow-lg transition-shadow bg-white p-6">
-                  <CardContent className="p-0 flex flex-col h-full gap-4 justify-center">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Heart className="h-5 w-5 text-primary" />
-                    </div>
-                    <p className="text-foreground/70 text-sm leading-relaxed">{quote}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* ── Parent Reviews & Testimonials ── */}
+      <ReviewsSection />
 
       {/* ── FAQ ── */}
       <section id="faq" className="py-24 px-4 bg-white">

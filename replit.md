@@ -49,6 +49,7 @@ A premium marketing + registration web app for a children's 5-day holiday advent
 - **Landing page**: Hero, about, 5-day activity schedule with real photo galleries, important info, pricing, contact with WhatsApp links
 - **Registration**: 5-step form (parent info, child info, medical, emergency/pickup, consent + M-Pesa payment upload)
 - **Admin dashboard**: Stats summary, searchable registrations table, CSV export, payment status management
+- **Parent reviews**: Public reviews section on landing (approved only, star ratings, JSON-LD aggregate rating) + "Leave a Review" dialog; spam protection via honeypot, per-IP rate limit (3/hr), 24h duplicate-email guard; admin moderation page at `/admin/reviews` (approve/reject/edit/delete)
 
 ## User preferences
 

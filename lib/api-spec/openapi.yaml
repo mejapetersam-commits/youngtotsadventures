@@ -12,6 +12,8 @@ tags:
     description: Health operations
   - name: registrations
     description: Registration operations
+  - name: reviews
+    description: Parent review operations
   - name: admin
     description: Admin operations
   - name: uploads
@@ -95,6 +97,123 @@ paths:
                 $ref: "#/components/schemas/Registration"
         "404":
           description: Registration not found
+
+  /reviews:
+    get:
+      operationId: listPublicReviews
+      tags: [reviews]
+      summary: List approved reviews (public)
+      responses:
+        "200":
+          description: Approved reviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicReviewListResponse"
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Submit a new review (public, pending approval)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Review submitted for approval
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicReview"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/reviews:
+    get:
+      operationId: listReviews
+      tags: [admin]
+      summary: List all reviews (admin)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewListResponse"
+        "401":
+          description: Unauthorized
+
+  /admin/reviews/{id}:
+    patch:
+      operationId: updateReview
+      tags: [admin]
+      summary: Update a review's content or status (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewUpdate"
+      responses:
+        "200":
+          description: Updated review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteReview
+      tags: [admin]
+      summary: Delete a review (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deletion result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResult"
+        "404":
+          description: Not found
 
   /admin/login:
     post:
@@ -533,3 +652,129 @@ components:
           type: integer
         todayRegistrations:
           type: integer
+
+    ReviewInput:
+      type: object
+      required:
+        - name
+        - email
+        - rating
+        - review
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 200
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        review:
+          type: string
+          minLength: 10
+          maxLength: 1000
+        website:
+          type: string
+          description: Honeypot field — must be empty; bots that fill it are rejected silently.
+
+    PublicReview:
+      type: object
+      required:
+        - id
+        - name
+        - rating
+        - review
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        rating:
+          type: integer
+        review:
+          type: string
+        createdAt:
+          type: string
+
+    PublicReviewListResponse:
+      type: object
+      required:
+        - reviews
+        - total
+      properties:
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicReview"
+        total:
+          type: integer
+
+    Review:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - rating
+        - review
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        rating:
+          type: integer
+        review:
+          type: string
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        createdAt:
+          type: string
+
+    ReviewListResponse:
+      type: object
+      required:
+        - reviews
+        - total
+        - page
+        - limit
+      properties:
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    ReviewUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        review:
+          type: string
+          minLength: 10
+          maxLength: 1000
+        status:
+          type: string
+          enum: [pending, approved, rejected]

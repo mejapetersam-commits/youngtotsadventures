@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import {
   Users, CheckCircle2, Clock, Search, FileDown,
   MapPin, LogOut, ChevronRight, Trash2, Loader2,
-  ChevronLeft, ArrowUp, ArrowDown, ChevronsUpDown,
+  ChevronLeft, ArrowUp, ArrowDown, ChevronsUpDown, MessageSquareQuote,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -215,10 +215,18 @@ export default function AdminDashboard() {
             <MapPin className="h-6 w-6 text-primary" />
             <span className="text-xl font-serif font-bold">Admin Dashboard</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link href="/admin/reviews">
+              <Button variant="ghost" size="sm" className="gap-2">
+                <MessageSquareQuote className="h-4 w-4" />
+                Reviews
+              </Button>
+            </Link>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+              <LogOut className="h-4 w-4" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 

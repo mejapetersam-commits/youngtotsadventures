@@ -152,6 +152,110 @@ export interface StatsResponse {
   todayRegistrations: number;
 }
 
+export interface ReviewInput {
+  /**
+     * @minLength 2
+     * @maxLength 100
+     */
+  name: string;
+  /** @maxLength 200 */
+  email: string;
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating: number;
+  /**
+     * @minLength 10
+     * @maxLength 1000
+     */
+  review: string;
+  /** Honeypot field — must be empty; bots that fill it are rejected silently. */
+  website?: string;
+}
+
+export interface PublicReview {
+  id: number;
+  name: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+}
+
+export interface PublicReviewListResponse {
+  reviews: PublicReview[];
+  total: number;
+}
+
+export type ReviewStatus = typeof ReviewStatus[keyof typeof ReviewStatus];
+
+
+export const ReviewStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
+export interface Review {
+  id: number;
+  name: string;
+  email: string;
+  rating: number;
+  review: string;
+  status: ReviewStatus;
+  createdAt: string;
+}
+
+export interface ReviewListResponse {
+  reviews: Review[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export type ReviewUpdateStatus = typeof ReviewUpdateStatus[keyof typeof ReviewUpdateStatus];
+
+
+export const ReviewUpdateStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
+export interface ReviewUpdate {
+  /**
+     * @minLength 2
+     * @maxLength 100
+     */
+  name?: string;
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating?: number;
+  /**
+     * @minLength 10
+     * @maxLength 1000
+     */
+  review?: string;
+  status?: ReviewUpdateStatus;
+}
+
+export type ListReviewsParams = {
+status?: ListReviewsStatus;
+page?: number;
+limit?: number;
+};
+
+export type ListReviewsStatus = typeof ListReviewsStatus[keyof typeof ListReviewsStatus];
+
+
+export const ListReviewsStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
 export type ListRegistrationsParams = {
 search?: string;
 paymentStatus?: string;
