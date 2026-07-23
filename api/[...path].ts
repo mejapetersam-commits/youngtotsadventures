@@ -4,12 +4,21 @@
 // so we hand it the request completely unmodified — no path rewriting
 // needed here.
 //
-// Note: we import app.ts directly, NOT index.ts — index.ts calls
+// We import the pre-bundled dist/app.mjs (built by esbuild via
+// artifacts/api-server/build.mjs), not the raw TypeScript source. Vercel's
+// own per-function build only transpiles the entry file it's given; it
+// doesn't bundle/inline relative imports crossing package boundaries in
+// this monorepo, which left them unresolved at runtime. Importing the
+// already-bundled, self-contained output sidesteps that entirely — see
+// build.mjs for the second "src/app.ts" entry point that produces it.
+//
+// Note: index.mjs (the OTHER bundle produced by the same build) calls
 // app.listen(port) at module load time, which only makes sense for a
-// long-running server (e.g. local dev or Replit) and must never run in a
-// serverless function.
+// long-running server (local dev / Replit) and must never run in a
+// serverless function — that's why app.mjs (a separate bundle with no
+// listen() call) exists and is what we import here.
 import type { IncomingMessage, ServerResponse } from "http";
-import expressApp from "../artifacts/api-server/src/app";
+import expressApp from "../artifacts/api-server/dist/app.mjs";
 
 // Express apps are runtime-callable RequestListener functions
 // ((req, res) => void), but in Vercel's isolated per-function build,
