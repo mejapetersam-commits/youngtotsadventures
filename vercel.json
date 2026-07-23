@@ -1,5 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/register", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/dashboard", "destination": "/index.html" },
+    { "source": "/admin/reviews", "destination": "/index.html" },
+    { "source": "/admin/registrations/:id(\\d+)", "destination": "/index.html" }
   ]
 }
