@@ -9,7 +9,15 @@
 // long-running server (e.g. local dev or Replit) and must never run in a
 // serverless function.
 import type { IncomingMessage, ServerResponse } from "http";
-import app from "../artifacts/api-server/src/app";
+import expressApp from "../artifacts/api-server/src/app";
+
+// Express apps are runtime-callable RequestListener functions
+// ((req, res) => void), but in Vercel's isolated per-function build,
+// TypeScript sometimes resolves the Express app's type without its call
+// signature (a type-resolution quirk, not a runtime issue). Casting through
+// `unknown` sidesteps that regardless of which Express type declaration
+// gets picked up during that isolated build.
+const app = expressApp as unknown as (req: IncomingMessage, res: ServerResponse) => void;
 
 export default function handler(req: IncomingMessage, res: ServerResponse) {
   return app(req, res);
