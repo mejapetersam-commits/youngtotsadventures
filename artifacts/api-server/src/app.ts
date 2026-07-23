@@ -31,12 +31,22 @@ app.use(cors());
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 
-// Serve uploaded payment proofs
-const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+// Serve uploaded payment proofs. On Vercel's serverless filesystem only
+// /tmp is writable, and it isn't persistent across invocations — this is a
+// known limitation for this deployment target (payment-proof uploads won't
+// survive between requests there). Guarded so it can never crash app
+// startup regardless of environment.
+const uploadsDir = process.env.VERCEL
+  ? path.join("/tmp", "uploads")
+  : path.join(process.cwd(), "uploads");
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+  app.use("/api/uploads", express.static(uploadsDir));
+} catch (err) {
+  logger.warn({ err }, "Could not set up uploads directory — file serving disabled");
 }
-app.use("/api/uploads", express.static(uploadsDir));
 
 app.use("/api", router);
 
