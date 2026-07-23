@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run typecheck && pnpm --filter ./artifacts/api-server --filter ./artifacts/summer-safari run build",
   "rewrites": [
     { "source": "/register", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" },
