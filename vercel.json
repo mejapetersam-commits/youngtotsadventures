@@ -1,6 +1,7 @@
 {
   "buildCommand": "pnpm run typecheck && pnpm --filter ./artifacts/api-server --filter ./artifacts/summer-safari run build",
   "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/[...path]?path=:path*" },
     { "source": "/register", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/dashboard", "destination": "/index.html" },
