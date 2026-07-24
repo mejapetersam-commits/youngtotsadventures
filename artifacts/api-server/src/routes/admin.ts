@@ -81,6 +81,18 @@ router.post("/admin/login", async (req, res) => {
 
   const { username, password } = parsed.data;
 
+  // eslint-disable-next-line no-console
+  console.log(
+    "[admin/login] received username:",
+    JSON.stringify(username),
+    "| expected username:",
+    JSON.stringify(ADMIN_USERNAME),
+    "| password length received:",
+    password.length,
+    "| expected password length:",
+    ADMIN_PASSWORD.length,
+  );
+
   if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
